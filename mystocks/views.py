@@ -6,11 +6,11 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 from django.urls import reverse, reverse_lazy
-from django.views.generic import (TemplateView, ListView, CreateView, UpdateView, )
+from django.views.generic import (TemplateView, ListView, CreateView, UpdateView, DetailView)
 
 from . import forms
-# from .forms import StockForm
-# from .models import Stock
+from .forms import StockForm
+from .models import Stock
 
 # Create your views here.
 
@@ -32,7 +32,29 @@ class ThanksPageView(TemplateView):
     template_name = 'myStocks/logout.html'
 
 
-# class StockCreateView(CreateView):
+class StockCreateView(CreateView):
+    model = Stock
+    form_class = StockForm
+    # success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        form.instance.valid = True
+        return super(StockCreateView, self).form_valid(form)
+
+
+class StockUpdateView(UpdateView):
+    model = Stock
+    form_class = StockForm
+    template_name = "mystocks/stock_form.html"
+    context_object_name = "Stock"
+
+    # def get_context_data(self, **kwargs):
+    #     # context = super(StockDetailView, self).get_context_data(**kwargs)
+    #     context = Stock.objects.get(id=self.kwargs['id'])
+    #     return context
+
+# class TestUpdateView(UpdateView):
 #     model = Stock
 #     form_class = StockForm
-#     success_url = reverse_lazy("home")
+#     template_name = "mystocks/stock_form.html"
+#     context_object_name = "Stock"

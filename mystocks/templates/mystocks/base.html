@@ -13,8 +13,6 @@
         <h2><strong>Investments</strong></h2>
         <h4>developed by</h4>
         <h4><em>Mahesh N Gidwani</em></h4>
-{#        <h4><strong>Capstone Project</strong></h4>#}
-{#        <h4>CS50's Web Programming with Python and JavaScript 2020</h4>#}
         <p><em><span style="text-align: center; color: #0000ff;">
             <strong>(click anywhere in this window to dismiss)</strong></span></em></p>
     </div>
@@ -33,24 +31,32 @@
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Home</a></li>
+                <li><a href="{% url 'stocks' %}" class="nav-link px-2 link-dark">Stocks</a></li>
 {#                <li><a href="{% url 'markets' %}" class="nav-link px-2 link-dark">Markets Today</a></li>#}
                 {%  if user.is_authenticated %}
 {#                    <li><a href="{% url 'dashboard' %}" class="nav-link px-2 link-dark">Dashboard</a></li>#}
 {#                    <li><a href="{% url 'history' %}" class="nav-link px-2 link-dark">Txn History</a></li>#}
 {#                    <li><a href="{% url 'transaction' %}" class="nav-link px-2 link-dark">Trading</a></li>#}
-{#                    <li class="nav-item dropdown">#}
-{#                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">#}
-{#                            Watchlists#}
-{#                        </a>#}
-{#                        <ul class="dropdown-menu">#}
-{#                            <li><a href="{% url 'watchlist' 1 %}" class="nav-link px-2 link-dark">Watchlists #1</a></li>#}
-{#                            <li><a href="{% url 'watchlist' 2 %}" class="nav-link px-2 link-dark">Watchlists #2</a></li>#}
-{#                            <li><a href="{% url 'watchlist' 3 %}" class="nav-link px-2 link-dark">Watchlists #3</a></li>#}
-{#                            <li><a href="{% url 'watchlist' 4 %}" class="nav-link px-2 link-dark">Watchlists #4</a></li>#}
-{#                            <li><a href="{% url 'watchlist' 5 %}" class="nav-link px-2 link-dark">Watchlists #5</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    <li><a href="{% url 'contact' user.id %}" class="nav-link px-2 link-dark">My Contact</a></li>#}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Portfolios
+                        </a>
+                        <ul class="dropdown-menu">
+{#                          Duplicate the line below for Portfolios 2, 3, etc  #}
+{#                          **** Note: The URL in the line below has to be updated to teh correct URL#}
+{#                            <li><a href="{% url '' %}" class="nav-link px-2 link-dark">Portfolio 1</a></li>#}
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Watchlists
+                        </a>
+                        <ul class="dropdown-menu">
+{#                          Duplicate the line below for Watchlists 2, 3, etc  #}
+{#                          **** Note: The URL in the line below has to be updated to teh correct URL#}
+{#                            <li><a href="{% url ''%}" class="nav-link px-2 link-dark">Watchlists #1</a></li>#}
+                        </ul>
+                    </li>
                 {% endif %}
                 <li><a href="JavaScript:showAbout();" class="nav-link px-2 link-dark">About</a></li>
             </ul>

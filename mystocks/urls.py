@@ -25,5 +25,7 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="myStocks/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("thanks/", views.ThanksPageView.as_view(), name="thanks"),
-    # path("<app name>/", views.<View>.as_view(), name="<app name>"),
+    path("stocks/", views.StockCreateView.as_view(), name="stocks"),
+    path("stocks/<int:pk>/", views.StockUpdateView.as_view(), name="update"),
+    # path("stocks/<str:symbol>/", views.TestUpdateView.as_view(), name="test"),
 ]

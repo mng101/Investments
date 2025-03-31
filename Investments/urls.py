@@ -23,14 +23,14 @@ urlpatterns = [
 
 # *** Customization starts here
 
-# Use include() to add URLS from the catalog application and authentication system
+# Use include() to add URLS from the "mytocks" application and authentication system
 from django.urls import include
 
 urlpatterns += [
     path('mystocks/', include('mystocks.urls')),
 ]
 
-# Add URL maps to redirect the base URL to our catalog application
+# Add URL maps to redirect the base URL to our "mystocks" application
 from django.views.generic import RedirectView
 urlpatterns += [
     path('', RedirectView.as_view(url='/mystocks/', permanent=True)),
