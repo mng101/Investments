@@ -18,7 +18,7 @@ html {
   font-family: Arial, sans-serif;
   margin: 20px;
   padding: 10px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body {
@@ -28,6 +28,11 @@ body {
 .form-group {
   margin-bottom: 1rem;
   font-size: 12px;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+  font-size: 14px;
 }
 
 /*# sourceMappingURL=styles.css.map */
