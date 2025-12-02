@@ -31,7 +31,7 @@
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Home</a></li>
-                <li><a href="{% url 'stocks' %}" class="nav-link px-2 link-dark">Stock List</a></li>
+                <li><a href="{% url 'create' %}" class="nav-link px-2 link-dark">Create New</a></li>
                 {%  if user.is_authenticated %}
                     <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Menu1</a></li>
                     <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Menu2</a></li>

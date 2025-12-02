@@ -22,10 +22,12 @@ from . import views
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="home"),
     path("signup/", views.SignUp.as_view(), name="signup"),
-    path("login/", auth_views.LoginView.as_view(template_name="myapp/login.html"), name="login"),
+    path("login/", auth_views.LoginView.as_view(template_name="stocks/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("thanks/", views.ThanksPageView.as_view(), name="thanks"),
     path("stocks/", views.StockCreateView.as_view(), name="stocks"),
-    path("stocks/<str:pk>/", views.StockUpdateView.as_view(), name="update"),
+    path("create/", views.StockCreateView.as_view(), name="create"),
+    # path("stocks/<str:pk>/", views.StockUpdateView.as_view(), name="update"),
+    path("<str:pk>/", views.StockUpdateView.as_view(), name="update"),
     path("refresh/<str:symbol>/<int:img>/", views.refresh, name="refresh"),
 ]
