@@ -1,0 +1,38 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+
+#db.sqlite3 - Add to the git repository
+db.sqlite3-journal
+
+# Media Files
+media
+
+# Virtual Environment #
+/_venv/
+
+# Backup Directory
+/__ Backups/
+
+# RAPID API Keys saved in local_settings.py file
+# local_settings.py
+
+ PyCharm files #
+ .idea/**/workspace.xml
+ .idea/**/tasks.xml
+ .idea/dictionaries
+ .idea/**/dataSources/
+ .idea/**/dataSources.ids
+ .idea/**/dataSources.xml
+ .idea/**/dataSources.local.xml
+ .idea/**/sqlDataSources.xml
+ .idea/**/dynamic.xml
+ .idea/**/uiDesigner.xml
+ .idea/**/gradle.xml
+ .idea/**/libraries
+ *.iws /out/
+
+/manage.py
+/db.sqlite3

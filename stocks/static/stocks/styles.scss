@@ -1,0 +1,45 @@
+#about {
+  position: absolute;
+  display: none;
+  width: 50%;
+  height: 300px;
+  margin: auto;
+  top: 50px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  padding: 70px 0;
+  text-align: center;
+  background-color: #77adcf;
+  cursor: pointer;
+}
+
+html {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 10px;
+  font-size: 12px;
+}
+
+body {
+  line-height: 1.15;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  font-size: 12px;
+}
+
+.textA {
+  font-size: 20px;
+  padding-right: 50px;
+}
+
+.textB {
+  font-size:12px;
+}
+
+.img {
+  left-margin: 50px;
+  width: 1000px;
+}

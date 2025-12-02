@@ -1,0 +1,58 @@
+{% extends 'stocks/base.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="container">
+        <h5>
+            {% if not form.instance.pk %}
+                Create a new Symbol record
+            {% else %}
+                Update a Symbol
+            {% endif %}
+        </h5>
+
+        {# This is a minimal template since all the form formatting is done in forms.py using Crispy Forms helpers #}
+        {# The line {{ form|crispy }} should be removed for the form to function correctly #}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form form.helper %}
+{#              {% form %}#}
+{#            <img src="{{ form.instance.img.url }}">#}
+        </form>
+    <br>
+
+        {% if Stock.img1.url %}
+            <div class="col-11">
+                <p>
+                    <span class="textA">Bay Street</span>
+                    <span class="textB">Updated on: {{ Stock.last_update_1 }}
+                        <a href={% url 'refresh' Stock.symbol 1 %} type="submit" class="btn btn-info" role="button">Refresh</a></span>
+{#                        <button style="font-size:12px" <a href="{% url 'refresh' 1 %}"> Refresh</a></span>#}
+{#                        <button <a href="{% url 'refresh' 1 %}"> Refresh</a></span>#}
+                </p>
+{#                <br>#}
+                <img src="{{ Stock.img1.url }}" class="img">
+            </div>
+        {% endif %}
+        <br>
+        {% if Stock.img2.url %}
+            <div class="col-11">
+                <p>
+                    <span class="textA">Analyst Rating</span>
+                    <span class="textB">Updated on: {{ Stock.last_update_2 }}
+                        <a href={% url 'refresh' Stock.symbol 2 %} type="submit" class="btn btn-info" role="button">Refresh</a></span>
+{#                    <button style="font-size:12px"> Refresh</button>#}
+{#                    Updated on: {{ Stock.last_update_2 }}#}
+                </p>
+                <br>
+                <img src="{{ Stock.img2.url }}" alt="" width="1000px">
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

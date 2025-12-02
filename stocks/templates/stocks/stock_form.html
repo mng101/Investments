@@ -1,0 +1,27 @@
+{% extends 'stocks/base.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="container">
+        <h4>
+            {% if not form.instance.pk %}
+                Create a new Symbol record
+            {% else %}
+                Update a Symbol
+            {% endif %}
+        </h4>
+        <br>
+
+{# This is a minimal template since all the form formatting is done in forms.py using Crispy Forms helpers #}
+{# The line {{ form|crispy }} should be removed for the form to function correctly #}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form form.helper %}
+        </form>
+    </div>
+
+{% endblock %}
