@@ -18,7 +18,7 @@ html {
   font-family: Arial, sans-serif;
   margin: 20px;
   padding: 10px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 body {
@@ -36,12 +36,28 @@ body {
 }
 
 .textB {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .img {
   left-margin: 50px;
   width: 1000px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* Creates responsive columns */
+  gap: 20px;
+  /* Space between grid items */
+  padding: 20px;
+}
+
+.grid-item {
+  border: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /*# sourceMappingURL=styles.css.map */

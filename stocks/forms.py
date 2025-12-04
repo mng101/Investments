@@ -21,12 +21,17 @@ class UserCreateForm(UserCreationForm):
         self.fields["username"].label = "Login name"
         # self.fields["email"].label = "Email address"
 
+
 class StockForm(forms.ModelForm):
-# TODO: Add comments for sections of the code that work
+
     class Meta:
         model = Stock
         # fields = '__all__'
         # fields = ['symbol', 'name', 'industry', 'notes', 'img1', 'img2']
+        # fields img1 and img2 were removed from the forms class to avoid the default display
+        # of the file path to be uploaded to the image field.
+        # The Image content is being copied from the clipboard using the PIL "grabclipboard" function
+        #
         fields = ['symbol', 'name', 'industry', 'notes']
         widgets = {
                     # Text area to capture notes recorded for the stock

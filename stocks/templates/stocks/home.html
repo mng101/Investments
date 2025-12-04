@@ -26,5 +26,66 @@
 {#        </ol>#}
 {##}
 {#    </div>#}
+{#<div>#}
 
+{#    <div class="pagination">#}
+{#        <span class="step-links">#}
+{#            {% if page_obj.has_previous %}#}
+{#                <a href="?page=1">&laquo; first</a>#}
+{#                <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+{#            {% endif %}#}
+{##}
+{#            {% for stock in page_obj %}#}
+                {# Each "contact" is a Contact model object. #}
+{#                {{ stock.symbol }}<br>#}
+{#                ...<br>#}
+{#            {% endfor %}#}
+{##}
+{#            <span class="current">#}
+{#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#            </span>#}
+{##}
+{#            {% if page_obj.has_next %}#}
+{#                <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+{#            {% endif %}#}
+{#        </span>#}
+{#    </div>#}
+    <h1>Stock List</h1>
+{#    <div class="column-container"#}
+{#         {%  for  stock in page_obj %}#}
+{#         {%  for  item in stocks %}#}
+{#            <div class="comumn-item"></div>#}
+{#                <h2>{{  item.symbol }}</h2>#}
+{#             <h2>"Test"</h2>#}
+{#            </div>#}
+{#        {%  endfor %}#}
+{#    </div>#}
+
+<body>
+    <div class="container">
+        <div class = "row">
+            {% for item in stocks %}
+                {% if forloop.counter|divisibleby:6 %}
+                    <div class = "col-md-2">
+                    <a href="{% url 'update' pk=item.symbol %}">
+                        <h5>{{ item.symbol }}</h5>
+                    </a>
+                    </div>
+                    </div>
+                    {% if not forloop.last %}
+                        <div class="row">
+                    {% endif %}
+                {% else %}
+                    <div class = "col-md-2">
+                    <a href="{% url 'update' pk=item.symbol %}">
+                        <h5>{{ item.symbol }}</h5>
+                    </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
 {% endblock %}
