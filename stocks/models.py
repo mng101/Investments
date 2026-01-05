@@ -22,18 +22,24 @@ class Stock(models.Model):
     name = models.CharField(max_length=100)
     industry = models.CharField(max_length=100)
     notes = models.CharField(max_length=1024, blank=True)
+
     img1 = models.ImageField(
         upload_to='stocks/',
         default='stocks/Default1.png',
         null="True", blank="True"
     )
     last_update_1 = models.DateTimeField(auto_now_add=True)
+    img1_refreshed_on = models.DateField(default='2025-01-01')
+    img1_last_analyst_entry = models.DateField(default="2025-01-01")
+
     img2 = models.ImageField(
         upload_to='stocks/',
         default='stocks/Default2.png',
         null="True", blank="True"
     )
     last_update_2 = models.DateTimeField(auto_now_add="True")
+    img2_refreshed_on = models.DateField(default='2025-01-01')
+    img2_last_analyst_entry = models.DateField(default="2025-01-01")
 
     class Meta:
         ordering = ["symbol"]

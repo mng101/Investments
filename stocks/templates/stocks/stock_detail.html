@@ -29,13 +29,14 @@
             <div class="col-11">
                 <p>
                     <span class="textA">Bay Street</span>
-                    <span class="textB">Updated on: {{ Stock.last_update_1 }}
-                        <a href={% url 'refresh' Stock.symbol 1 %} type="submit" class="btn btn-info" role="button">Refresh</a></span>
+{#                    <span class="textB">Refreshed on: {{ Stock.last_update_1 }}</span>#}
+                    <span class="textB" >Refreshed on: <b>{{ Stock.img1_refreshed_on }}</b></span>
+                    <span><a href={% url 'refresh' Stock.symbol 1 %}> <button>Refresh</button></a></span>
 {#                        <button style="font-size:12px" <a href="{% url 'refresh' 1 %}"> Refresh</a></span>#}
 {#                        <button <a href="{% url 'refresh' 1 %}"> Refresh</a></span>#}
                 </p>
 {#                <br>#}
-                <img src="{{ Stock.img1.url }}" class="img">
+                <img src="{{ Stock.img1.url }}" class="img" alt="">
             </div>
         {% endif %}
         <br>
@@ -43,8 +44,9 @@
             <div class="col-11">
                 <p>
                     <span class="textA">Analyst Rating</span>
-                    <span class="textB">Updated on: {{ Stock.last_update_2 }}
-                        <a href={% url 'refresh' Stock.symbol 2 %} type="submit" class="btn btn-info" role="button">Refresh</a></span>
+{#                    <span class="textB">Refreshed on: {{ Stock.last_update_2 }}</span>#}
+                    <span class="textB">Refreshed on: <b>{{ Stock.img2_refreshed_on }}</b></span>
+                    <span><a href={% url 'refresh' Stock.symbol 2 %}> <button>Refresh</button></a></span>
 {#                    <button style="font-size:12px"> Refresh</button>#}
 {#                    Updated on: {{ Stock.last_update_2 }}#}
                 </p>

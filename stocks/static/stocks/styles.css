@@ -32,16 +32,23 @@ body {
 
 .textA {
   font-size: 20px;
-  padding-right: 50px;
+  width: 200px;
+  display: inline-block;
 }
 
 .textB {
   font-size: 14px;
+  width: 200px;
+  display: inline-block;
 }
 
 .img {
   left-margin: 50px;
   width: 1000px;
+}
+
+.my-custom-button {
+  font-size: 1.2rem;
 }
 
 .grid-container {

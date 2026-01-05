@@ -32,11 +32,16 @@ body {
 
 .textA {
   font-size: 20px;
-  padding-right: 50px;
+  width: 200px;
+  // ensure inline-block for width to take effect
+  display: inline-block;
 }
 
 .textB {
   font-size:14px;
+  width: 200px;
+  // ensure inline-block for width to take effect
+  display: inline-block;
 }
 
 .img {
@@ -44,19 +49,9 @@ body {
   width: 1000px;
 }
 
-//.column-container {
-//  display: flex; /* or grid */
-//  flex-wrap: wrap; /* for flexbox, allows items to wrap */
-//  gap: 20px; /* spacing between columns */
-//}
-//
-//.column-item {
-//  flex: 1 1 300px; /* for flexbox, allows items to grow/shrink and sets a base width */
-//  /* or for grid: width: calc(33.33% - 20px); for 3 columns with 20px gap */
-//  border: 1px solid #ccc;
-//  padding: 15px;
-//  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-//}
+.my-custom-button {
+  font-size: 1.2rem
+}
 
 .grid-container {
     display: grid;
