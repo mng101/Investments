@@ -47,6 +47,13 @@ class Stock(models.Model):
     # Image fields populated by the PIL "grabimage" functions
     # These fields are not included in the StockForm, since the default handling of an Image Field
     # uploaded from a file, is not suitable for the desired user interaction
+    #
+    # ***** NOTE *****
+    #
+    # Analyst Ratings do not apply to some securities such as Preferred Shares, Units, etc.
+    # For these securities, recommendation is to manually update the Bay Street and Anlayst
+    # Rating update dates to 2030-12-31 through the Admin interface so that these securities
+    # can be filtered out in selected views
 
     img1 = models.ImageField( # Bay Street Analyst price targets BMOIL site
         upload_to='stocks/',

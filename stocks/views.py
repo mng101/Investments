@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from . import forms
 from .forms import StockForm
 from .models import Stock
+from django.db.models import F
 
 from io import BytesIO
 from PIL import ImageGrab
@@ -64,6 +65,55 @@ class StockUpdateView(UpdateView):
     context_object_name = "Stock"
 
 
+# List the Symbols in the database sorted by the "last_baystreet_entry" date to help
+# identify Symbols that may potentially need to be reviewed and updated
+#
+class BayStreetEntryList(ListView):
+    model = Stock
+    # stocks = Stock.objects.all().order_by(-F('last_baystreet_entry'))
+    template_name = 'stocks/baystreet_entry_list.html'
+    context_object_name = "stocks"
+
+    def get_queryset(self):
+        # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
+        # This helps identify Stocks where the Analyst Ratings may need to be updated
+        #
+        stocks = Stock.objects.all().order_by('last_baystreet_entry')
+        return stocks
+
+
+class AnalystEntryList(ListView):
+    model = Stock
+    # stocks = Stock.objects.all().order_by(-F('last_baystreet_entry'))
+    template_name = 'stocks/analyst_entry_list.html'
+    context_object_name = "stocks"
+
+    def get_queryset(self):
+        # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
+        # This helps identify Stocks where the Analyst Ratings may need to be updated
+        #
+        stocks = Stock.objects.all().order_by('last_analyst_rating')
+        return stocks
+
+
+class ExDivDateList(ListView):
+    model = Stock
+    # stocks = Stock.objects.all().order_by(-F('last_baystreet_entry'))
+    template_name = 'stocks/ex_div_date_list.html'
+    context_object_name = "stocks"
+
+    def get_queryset(self):
+        # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
+        # This helps identify Stocks where the Analyst Ratings may need to be updated
+        #
+        stocks = Stock.objects.all().order_by('ex_div_date')
+        return stocks
+
+
+# Refresh Analyst Ratings for the Stock from the Image captured from the Investment web site
+# Analyst ratings are captured from 2 different web sites and saved with other details of the Stock
+# The date when the Anlayst Rating was refreshed is also captured
+#
 def refresh(request,*args, **kwargs):
     print("Refreshing Image")
     clipboard = ImageGrab.grabclipboard()
@@ -82,12 +132,12 @@ def refresh(request,*args, **kwargs):
 
         if (img == 1):
             stock.img1 = new_image
-            stock.last_update_1 = datetime.date.now()
+            stock.img1_refreshed_on = datetime.date.today()
             stock.img1.save(new_image, ContentFile(temp_img.read()), save=False)
         else:
             if (img == 2):
                 stock.img2 = new_image
-                stock.last_update_2 = datetime.date.now()
+                stock.img2_refreshed_on = datetime.date.today()
                 stock.img2.save(new_image, ContentFile(temp_img.read()), save=False)
 
         stock.save()

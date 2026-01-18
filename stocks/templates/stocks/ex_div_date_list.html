@@ -4,27 +4,36 @@
 
 {% block content %}
 
-    <h1>Stock List</h1>
+    <h4>Ex Dividend Date</h4>
+    <br>
 
 <body>
     <div class="container">
         <div class = "row">
             {% for item in stocks %}
-                {% if forloop.counter|divisibleby:6 %}
-                    <div class = "col-md-2">
+                {% if forloop.counter|divisibleby:3 %}
+{#                    <div class = "textB">#}
+                    <div class = "textC">
                         <a href="{% url 'update' pk=item.symbol %}">
-                            <h5>{{ item.symbol }}</h5>
+                            {{ item.symbol }}
                         </a>
+                    </div>
+                    <div class="col-md-2">
+                        {{ item.ex_div_date | date:"Y-m-d"}}
                     </div>
                     </div>
                     {% if not forloop.last %}
                         <div class="row">
                     {% endif %}
                 {% else %}
-                    <div class = "col-md-2">
+{#                    <div class = "textB">#}
+                    <div class = "textC">
                         <a href="{% url 'update' pk=item.symbol %}">
-                            <h5>{{ item.symbol }}</h5>
+                            {{ item.symbol }}
                         </a>
+                    </div>
+                    <div class = "col-md-2")>
+                        {{ item.ex_div_date | date:"Y-m-d"}}
                     </div>
                 {% endif %}
             {% endfor %}

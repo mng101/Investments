@@ -44,6 +44,13 @@ body {
   display: inline-block;
 }
 
+.textC {
+  font-size:20px;
+  width: 100px;
+  // ensure inline-block for width to take effect
+  display: inline-block;
+}
+
 .img {
   left-margin: 50px;
   width: 1000px;
