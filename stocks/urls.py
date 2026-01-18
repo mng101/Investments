@@ -27,7 +27,9 @@ urlpatterns = [
     path("thanks/", views.ThanksPageView.as_view(), name="thanks"),
     path("stocks/", views.StockCreateView.as_view(), name="stocks"),
     path("create/", views.StockCreateView.as_view(), name="create"),
-    # path("stocks/<str:pk>/", views.StockUpdateView.as_view(), name="update"),
+    path("baystreet/", views.BayStreetEntryList.as_view(), name="baystreet"),
+    path("analyst/", views.AnalystEntryList.as_view(), name="analyst"),
+    path("exdivdate/", views.ExDivDateList.as_view(), name="exdivdate"),
     path("<str:pk>/", views.StockUpdateView.as_view(), name="update"),
     path("refresh/<str:symbol>/<int:img>/", views.refresh, name="refresh"),
 ]
