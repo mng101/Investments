@@ -32,6 +32,16 @@ class Stock(models.Model):
         ('U', 'USD'),
     )
 
+    RATINGS = ( # Morningside Quant and Analyst Rating
+        ('1', '1*'),
+        ('2', '2*'),
+        ('3', '3*'),
+        ('4', '4*'),
+        ('5', '5*'),
+    )
+
+    # Symbol Details
+    #
     symbol = models.CharField(max_length=12, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
     industry = models.CharField(max_length=100)
@@ -40,6 +50,12 @@ class Stock(models.Model):
     dividend = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, default='Q')
     currency = models.CharField(max_length=1, choices=CURRENCIES, default='C')
+
+    # Portfolio Details
+    #
+    qty_owned = models.IntegerField(default=0)
+    avg_cost = models.DecimalField(max_digits=7, decimal_places=4, default=0.0000)
+    price = models.DecimalField(max_digits=7, decimal_places=4, default=0.0000)
 
     last_baystreet_entry = models.DateField(default="2025-07-01")
     last_analyst_rating = models.DateField(default="2025-07-01")
@@ -50,9 +66,9 @@ class Stock(models.Model):
     #
     # ***** NOTE *****
     #
-    # Analyst Ratings do not apply to some securities such as Preferred Shares, Units, etc.
-    # For these securities, recommendation is to manually update the Bay Street and Anlayst
-    # Rating update dates to 2030-12-31 through the Admin interface so that these securities
+    # Baystreet and Analyst Recommendations do not apply to some securities such as Preferred Shares,
+    # Units, etc. For these securities, recommendation is to manually update the Bay Street and Anlayst
+    # Recommendation update dates to 2030-12-31 through the Admin interface so that these securities
     # can be filtered out in selected views
 
     img1 = models.ImageField( # Bay Street Analyst price targets BMOIL site
