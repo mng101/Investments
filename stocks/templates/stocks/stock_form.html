@@ -6,13 +6,13 @@
 
 {% block content %}
     <div class="container">
-        <h4>
+        <h5>
             {% if not form.instance.pk %}
                 Create a new Symbol record
             {% else %}
                 Update a Symbol
             {% endif %}
-        </h4>
+        </h5>
         <br>
 
 {# This is a minimal template since all the form formatting is done in forms.py using Crispy Forms helpers #}

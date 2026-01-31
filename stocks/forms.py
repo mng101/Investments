@@ -95,5 +95,5 @@ class StockForm(forms.ModelForm):
                 css_class='form-row'
             ),
 
-            Submit('submit', 'Submit', css_class='mt-2')
+            Submit('submit', 'Submit', css_class='mt-2 btn-sm')
         )
