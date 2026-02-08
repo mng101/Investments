@@ -92,7 +92,7 @@ class AnalystEntryList(ListView):
         # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
         # This helps identify Stocks where the Analyst Ratings may need to be updated
         #
-        stocks = Stock.objects.all().order_by('last_analyst_rating')
+        stocks = Stock.objects.all().order_by('last_analyst_entry')
         return stocks
 
 

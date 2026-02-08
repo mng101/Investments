@@ -54,11 +54,11 @@ class Stock(models.Model):
     # Portfolio Details
     #
     qty_owned = models.IntegerField(default=0)
-    avg_cost = models.DecimalField(max_digits=7, decimal_places=4, default=0.0000)
-    price = models.DecimalField(max_digits=7, decimal_places=4, default=0.0000)
+    avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    price = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
 
     last_baystreet_entry = models.DateField(default="2025-07-01")
-    last_analyst_rating = models.DateField(default="2025-07-01")
+    last_analyst_entry = models.DateField(default="2025-07-01")
 
     # Image fields populated by the PIL "grabimage" functions
     # These fields are not included in the StockForm, since the default handling of an Image Field

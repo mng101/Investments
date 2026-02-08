@@ -19,7 +19,7 @@
                         </a>
                     </div>
                     <div class="col-md-2">
-                        {{ item.last_analyst_rating | date:"Y-m-d"}}
+                        {{ item.last_analyst_entry | date:"Y-m-d"}}
                     </div>
                     </div>
                     {% if not forloop.last %}
@@ -33,7 +33,7 @@
                         </a>
                     </div>
                     <div class = "col-md-2")>
-                        {{ item.last_analyst_rating | date:"Y-m-d"}}
+                        {{ item.last_analyst_entry | date:"Y-m-d"}}
                     </div>
                 {% endif %}
             {% endfor %}

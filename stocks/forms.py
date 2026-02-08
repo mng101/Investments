@@ -37,7 +37,7 @@ class StockForm(forms.ModelForm):
         # The Image content is being copied from the clipboard using the PIL "grabclipboard" function
         #
         fields = ['symbol', 'name', 'industry', 'ex_div_date', 'dividend', 'frequency', 'currency',
-                  'last_baystreet_entry', 'last_analyst_rating', 'notes']
+                  'last_baystreet_entry', 'last_analyst_entry', 'notes']
 
         # Image fields are populated by the PIL "grabimage" functions
         # These fields are not included in the StockForm, since the default handling of an Image Field
@@ -66,8 +66,9 @@ class StockForm(forms.ModelForm):
                         'step': '0.0001',
                         'style': 'text-align: right;'
                     }),
+
                     'last_baystreet_entry': DateInput(),
-                    'last_analyst_rating': DateInput(),
+                    'last_analyst_entry': DateInput(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -87,7 +88,7 @@ class StockForm(forms.ModelForm):
                 Column('currency', css_class='form_group col-1'),
                 Column('frequency', css_class='form_group col-2'),
                 Column('last_baystreet_entry', css_class='form_group col-2'),
-                Column('last_analyst_rating', css_class='form_group col-2'),
+                Column('last_analyst_entry', css_class='form_group col-2'),
                 css_class='form-row'
             ),
             Div(
