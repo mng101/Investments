@@ -61,20 +61,4 @@ body {
   font-size: 1.2rem;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  /* Creates responsive columns */
-  gap: 20px;
-  /* Space between grid items */
-  padding: 20px;
-}
-
-.grid-item {
-  border: 1px solid #ccc;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 /*# sourceMappingURL=styles.css.map */

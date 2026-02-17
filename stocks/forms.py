@@ -36,8 +36,10 @@ class StockForm(forms.ModelForm):
         # of the file path to be uploaded to the image field.
         # The Image content is being copied from the clipboard using the PIL "grabclipboard" function
         #
-        fields = ['symbol', 'name', 'industry', 'ex_div_date', 'dividend', 'frequency', 'currency',
-                  'last_baystreet_entry', 'last_analyst_entry', 'notes']
+        fields = ['symbol', 'name', 'industry', 'lseg', 'rating', 'quant', 'analyst',
+                  'ex_div_date', 'dividend', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
+                  'qty', 'avg_cost', 'price',
+                  'notes', 'action', ]
 
         # Image fields are populated by the PIL "grabimage" functions
         # These fields are not included in the StockForm, since the default handling of an Image Field
@@ -46,8 +48,9 @@ class StockForm(forms.ModelForm):
         widgets = {
                     # Text area to capture notes recorded for the stock
                     #
-                    'notes': Textarea(attrs={'rows': 5, 'cols': 20}),
-                    'ex_div_date': DateInput(),
+                    'notes': Textarea(attrs={'rows': 5}),
+                    'action': Textarea(attrs={'rows': 5}),
+
                     #
                     # Number Input displays spinner in the formfield
                     # 'dividend': forms.NumberInput(attrs={
@@ -55,7 +58,7 @@ class StockForm(forms.ModelForm):
                     # }),
                     # 'dividend': forms.NumberInput(attrs={'class': "no-spinner"}),
                     #
-                    # TextInput does not display the loading '0' for values less that $1.00
+                    # TextInput does not display the leading '0' for values less that $1.00
                     # 'dividend': forms.TextInput(
                     #     attrs={'inputmode': 'numeric',
                     #            'pattern': '[0-9]*'
@@ -64,9 +67,23 @@ class StockForm(forms.ModelForm):
                     # 'dividend': forms.NumberInput(attrs={
                     'dividend': forms.TextInput(attrs={
                         'step': '0.0001',
-                        'style': 'text-align: right;'
+                        'style': 'text-align: right'
+                    }),
+                    'qty': forms.TextInput(attrs={
+                        'step': '1',
+                        'style': 'text-align: right'
+                    }),
+                    'avg_cost': forms.TextInput(attrs={
+                        'step': '0.001',
+                        'style': 'text-align: right'
+
+                    }),
+                    'price': forms.TextInput(attrs={
+                        'step': '0.001',
+                        'style': 'text-align: right'
                     }),
 
+                    'ex_div_date': DateInput(),
                     'last_baystreet_entry': DateInput(),
                     'last_analyst_entry': DateInput(),
         }
@@ -77,10 +94,15 @@ class StockForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Div(
-                Column('symbol', css_class='form_group col-2'),
-                Column('name', css_class='form_group col-5'),
-                Column('industry', css_class='form_group col-5'),
-                css_class='form-row'
+                Column('symbol', css_class='form_group col-1'),
+                Column('name', css_class='form_group col-3'),
+                Column('industry', css_class='form_group col-3'),
+                Column ('lseg', css_class='form_group col-1'),
+                Column ('rating', css_class='form_group col-1'),
+                Column('quant', css_class='form_group col-1'),
+                Column('analyst', css_class='form_group col-1'),
+                Column ('qty', css_class='form_group col-1'),
+                css_class='row g-2'
             ),
             Div(
                 Column('ex_div_date', css_class='form_group col-2'),
@@ -89,11 +111,14 @@ class StockForm(forms.ModelForm):
                 Column('frequency', css_class='form_group col-2'),
                 Column('last_baystreet_entry', css_class='form_group col-2'),
                 Column('last_analyst_entry', css_class='form_group col-2'),
-                css_class='form-row'
+                Column('avg_cost', css_class='form_group col-1'),
+                Column('price', css_class='form_group col-1'),
+                css_class='row g-2'
             ),
             Div(
-                Column('notes'),
-                css_class='form-row'
+                Column('notes', css_class='form_group col-9'),
+                Column('action', css_class='form_group col-3'),
+                css_class='row g-2'
             ),
 
             Submit('submit', 'Submit', css_class='mt-2 btn-sm')

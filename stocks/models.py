@@ -33,6 +33,7 @@ class Stock(models.Model):
     )
 
     RATINGS = ( # Morningside Quant and Analyst Rating
+        ('0', 'NR'),
         ('1', '1*'),
         ('2', '2*'),
         ('3', '3*'),
@@ -45,20 +46,29 @@ class Stock(models.Model):
     symbol = models.CharField(max_length=12, unique=True, primary_key=True)
     name = models.CharField(max_length=100)
     industry = models.CharField(max_length=100)
-    notes = models.CharField(max_length=1024, blank=True)
+    lseg = models.CharField(max_length=2, null=True, blank=True)
+    rating = models.CharField(max_length=5, null=True, blank=True)
+    quant = models.CharField(max_length=2, choices=RATINGS, default=0)
+    analyst = models.CharField(max_length=2, choices=RATINGS, default=0)
+
+    # Portfolio Details
+    #
     ex_div_date = models.DateField(default=date.today)
     dividend = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, default='Q')
     currency = models.CharField(max_length=1, choices=CURRENCIES, default='C')
+    last_baystreet_entry = models.DateField(default="2025-07-01")
+    last_analyst_entry = models.DateField(default="2025-07-01")
 
-    # Portfolio Details
-    #
-    qty_owned = models.IntegerField(default=0)
+
+
+    notes = models.CharField(max_length=1024, blank=True)
+    action = models.CharField(max_length=200, blank=True)
+
+    qty = models.IntegerField(default=0)
     avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     price = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
 
-    last_baystreet_entry = models.DateField(default="2025-07-01")
-    last_analyst_entry = models.DateField(default="2025-07-01")
 
     # Image fields populated by the PIL "grabimage" functions
     # These fields are not included in the StockForm, since the default handling of an Image Field
