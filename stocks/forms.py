@@ -36,9 +36,9 @@ class StockForm(forms.ModelForm):
         # of the file path to be uploaded to the image field.
         # The Image content is being copied from the clipboard using the PIL "grabclipboard" function
         #
-        fields = ['symbol', 'name', 'industry', 'lseg', 'rating', 'quant', 'analyst',
+        fields = ['symbol', 'name', 'industry', 'lseg', 'ibes_mean', 'count', 'quant', 'analyst', 'qty',
                   'ex_div_date', 'dividend', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
-                  'qty', 'avg_cost', 'price',
+                  'avg_cost', 'price', 'fair_value',
                   'notes', 'action', ]
 
         # Image fields are populated by the PIL "grabimage" functions
@@ -76,11 +76,14 @@ class StockForm(forms.ModelForm):
                     'avg_cost': forms.TextInput(attrs={
                         'step': '0.001',
                         'style': 'text-align: right'
-
                     }),
                     'price': forms.TextInput(attrs={
                         'step': '0.001',
                         'style': 'text-align: right'
+                    }),
+                    'fair_value': forms.TextInput(attrs={
+                        'step': '0.001',
+                        'style': 'text-aligh: right',
                     }),
 
                     'ex_div_date': DateInput(),
@@ -95,13 +98,15 @@ class StockForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Column('symbol', css_class='form_group col-1'),
-                Column('name', css_class='form_group col-3'),
-                Column('industry', css_class='form_group col-3'),
+                Column('name', css_class='form_group col-2'),
+                Column('industry', css_class='form_group col-2'),
                 Column ('lseg', css_class='form_group col-1'),
-                Column ('rating', css_class='form_group col-1'),
+                Column ('ibes_mean', css_class='form_group col-1'),
+                Column ('count', css_class='form_group col-1'),
                 Column('quant', css_class='form_group col-1'),
                 Column('analyst', css_class='form_group col-1'),
                 Column ('qty', css_class='form_group col-1'),
+                Column ('avg_cost', css_class='form_group col-1'),
                 css_class='row g-2'
             ),
             Div(
@@ -111,8 +116,8 @@ class StockForm(forms.ModelForm):
                 Column('frequency', css_class='form_group col-2'),
                 Column('last_baystreet_entry', css_class='form_group col-2'),
                 Column('last_analyst_entry', css_class='form_group col-2'),
-                Column('avg_cost', css_class='form_group col-1'),
                 Column('price', css_class='form_group col-1'),
+                Column ('fair_value', css_class='form_group col-1'),
                 css_class='row g-2'
             ),
             Div(

@@ -32,7 +32,8 @@ class Stock(models.Model):
         ('U', 'USD'),
     )
 
-    RATINGS = ( # Morningside Quant and Analyst Rating
+    RATINGS = (
+        # Morningside Quant and Analyst Rating
         ('0', 'NR'),
         ('1', '1*'),
         ('2', '2*'),
@@ -47,7 +48,8 @@ class Stock(models.Model):
     name = models.CharField(max_length=100)
     industry = models.CharField(max_length=100)
     lseg = models.CharField(max_length=2, null=True, blank=True)
-    rating = models.CharField(max_length=5, null=True, blank=True)
+    ibes_mean = models.CharField(max_length=5, null=True, blank=True)
+    count = models.CharField(max_length=2, default=0)
     quant = models.CharField(max_length=2, choices=RATINGS, default=0)
     analyst = models.CharField(max_length=2, choices=RATINGS, default=0)
 
@@ -67,6 +69,7 @@ class Stock(models.Model):
 
     qty = models.IntegerField(default=0)
     avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    fair_value = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     price = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
 
 
