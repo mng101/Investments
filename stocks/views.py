@@ -70,7 +70,6 @@ class StockUpdateView(UpdateView):
 #
 class BayStreetEntryList(ListView):
     model = Stock
-    # stocks = Stock.objects.all().order_by(-F('last_baystreet_entry'))
     template_name = 'stocks/baystreet_entry_list.html'
     context_object_name = "stocks"
 
@@ -78,7 +77,9 @@ class BayStreetEntryList(ListView):
         # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
         # This helps identify Stocks where the Analyst Ratings may need to be updated
         #
-        stocks = Stock.objects.all().order_by('last_baystreet_entry')
+        stocks = Stock.objects.annotate(
+            data=F('last_baystreet_entry')
+        ).values('symbol', 'data').order_by('data')
         return stocks
 
 
@@ -89,10 +90,12 @@ class AnalystEntryList(ListView):
     context_object_name = "stocks"
 
     def get_queryset(self):
-        # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
+        # Get the list of Stocks in the database sorted by the last_analyst_entry.
         # This helps identify Stocks where the Analyst Ratings may need to be updated
         #
-        stocks = Stock.objects.all().order_by('last_analyst_entry')
+        stocks = Stock.objects.annotate(
+            data=F('last_analyst_entry')
+        ).values('symbol', 'data').order_by('data')
         return stocks
 
 
@@ -103,10 +106,28 @@ class ExDivDateList(ListView):
     context_object_name = "stocks"
 
     def get_queryset(self):
+        # Get the list of Stocks in the database sorted by the ex_div_date.
+        # This helps identify Stocks where the Ex_Div_Date may need to be updated
+        #
+        stocks = Stock.objects.annotate(
+            data=F('ex_div_date')
+        ).values('symbol', 'data').order_by('data')
+        return stocks
+
+
+class HoldingList(ListView):
+    model = Stock
+    template_name = 'stocks/generic_list.html'
+    context_object_name = "stocks"
+
+    def get_queryset(self):
         # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
         # This helps identify Stocks where the Analyst Ratings may need to be updated
+        # Rename the last_baystreet_entry to data to leverage the generic_list template
         #
-        stocks = Stock.objects.all().order_by('ex_div_date')
+        stocks = Stock.objects.annotate(
+            data=F('last_baystreet_entry')
+            ).values('symbol', 'data', ).order_by('data')
         return stocks
 
 

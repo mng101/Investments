@@ -1,0 +1,18 @@
+{% extends 'stocks/base.html' %}
+
+{% comment %} generic_list.html
+
+    This is a generic template to display contents selected from the database.
+    The template will display only 2 fields of the selected record.
+    The first field is the symbol, and next field could be any one of the dates renamed to data
+
+{% endcomment %}
+
+
+{% block content %}
+
+    <h4>Generic List</h4>
+    <br>
+
+    {% include "stocks/list_snippet.html" %}
+{% endblock %}

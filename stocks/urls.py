@@ -30,6 +30,7 @@ urlpatterns = [
     path("baystreet/", views.BayStreetEntryList.as_view(), name="baystreet"),
     path("analyst/", views.AnalystEntryList.as_view(), name="analyst"),
     path("exdivdate/", views.ExDivDateList.as_view(), name="exdivdate"),
+    path("holdinglist/", views.HoldingList.as_view(), name="holdinglist"),
     path("<str:pk>/", views.StockUpdateView.as_view(), name="update"),
     path("refresh/<str:symbol>/<int:img>/", views.refresh, name="refresh"),
 ]

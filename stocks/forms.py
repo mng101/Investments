@@ -83,7 +83,7 @@ class StockForm(forms.ModelForm):
                     }),
                     'fair_value': forms.TextInput(attrs={
                         'step': '0.001',
-                        'style': 'text-aligh: right',
+                        'style': 'text-align: right',
                     }),
 
                     'ex_div_date': DateInput(),

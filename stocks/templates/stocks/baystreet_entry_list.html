@@ -1,44 +1,10 @@
 {% extends 'stocks/base.html' %}
-{% load bootstrap5 %}
-{% load static %}
 
 {% block content %}
 
     <h4>Last BayStreet Entry</h4>
     <br>
 
-<body>
-    <div class="container">
-        <div class = "row">
-            {% for item in stocks %}
-                {% if forloop.counter|divisibleby:3 %}
-{#                    <div class = "textB">#}
-                    <div class = "textC">
-                        <a href="{% url 'update' pk=item.symbol %}">
-                            {{ item.symbol }}
-                        </a>
-                    </div>
-                        <div class="col-md-2">
-                            {{ item.last_baystreet_entry | date:"Y-m-d"}}
-                        </div>
-                    </div>
-                    {% if not forloop.last %}
-                        <div class="row">
-                    {% endif %}
-                {% else %}
-{#                    <div class = "textB">#}
-                    <div class = "textC">
-                        <a href="{% url 'update' pk=item.symbol %}">
-                            {{ item.symbol }}
-                        </a>
-                    </div>
-                    <div class = "col-md-2")>
-                        {{ item.last_baystreet_entry | date:"Y-m-d"}}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
+    {% include "stocks/list_snippet.html" %}
 
-</body>
 {% endblock %}

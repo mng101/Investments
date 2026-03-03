@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     #
     # Register optional software installed
-    'bootstrap5',
+    'django_bootstrap5',
     'crispy_forms',
     'crispy_bootstrap5',
 ]

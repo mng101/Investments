@@ -1,5 +1,5 @@
 {% extends 'stocks/bootstrap.html' %}
-{% load bootstrap5 %}
+{% load django_bootstrap5 %}
 {% load static %}
 
 {% block bootstrap5_before_content %}
@@ -9,13 +9,13 @@
     display is "none"
     {% endcomment %}
 
-    <div id="about" onclick="hideAbout()">
-        <h2><strong>The Investment Project</strong></h2>
-        <h4>developed by</h4>
-        <h4><em>Mahesh N Gidwani</em></h4>
-         <p><em><span style="text-align: center; color: #0000ff;">
-            <strong>(click anywhere in this window to dismiss)</strong></span></em></p>
-    </div>
+{#    <div id="about" onclick="hideAbout()">#}
+{#        <h2><strong>The Investment Project</strong></h2>#}
+{#        <h4>developed by</h4>#}
+{#        <h4><em>Mahesh N Gidwani</em></h4>#}
+{#         <p><em><span style="text-align: center; color: #0000ff;">#}
+{#            <strong>(click anywhere in this window to dismiss)</strong></span></em></p>#}
+{#    </div>#}
 
 {% endblock %}
 
@@ -34,26 +34,13 @@
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Home</a></li>
                 <li><a href="{% url 'create' %}" class="nav-link px-2 link-dark">Create New</a></li>
-{#                <li><a href="{% url 'baystreet' %}" class="nav-link px-2 link-dark">BayStreet</a></li>#}
-{#                {%  if user.is_authenticated %}#}
-{#                    <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Menu1</a></li>#}
-{#                    <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Menu2</a></li>#}
-{#                    <li><a href="{% url 'home' %}" class="nav-link px-2 link-dark">Menu3</a></li>#}
-{#                    <li class="nav-item dropdown">#}
-{#                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">#}
-{#                            Lists#}
-{#                        </a>#}
-{#                        <ul class="dropdown-menu">#}
-{#                            <li><a href="{% url 'baystreet' %}" class="nav-link px-2 link-dark">BayStreet</a></li>#}
-{#                            <li><a href="{% url 'analyst' %}" class="nav-link px-2 link-dark">Analyst</a></li>#}
-{#                            <li><a href="{% url 'exdivdate' %}" class="nav-link px-2 link-dark">ExDivDate</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                {% endif %}#}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Lists</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'baystreet' %}">Baystreet</a></li>
+                        <li><a class="dropdown-item" href="{% url 'analyst' %}">Analyst</a></li>
+                        <li><a class="dropdown-item" href="{% url 'exdivdate' %}">ExDivDate</a></li>
+                        <li><a class="dropdown-item" href="{% url 'holdinglist' %}">HoldingList</a></li>
                     </ul>
                 </li>
 
@@ -77,10 +64,7 @@
 
     </div>
 
-{#    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>#}
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>#}
 
     <script src="{% static 'stocks/index.js' %}"></script>
 
