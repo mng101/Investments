@@ -62,8 +62,6 @@ class Stock(models.Model):
     last_baystreet_entry = models.DateField(default="2025-07-01")
     last_analyst_entry = models.DateField(default="2025-07-01")
 
-
-
     notes = models.CharField(max_length=1024, blank=True)
     action = models.CharField(max_length=200, blank=True)
 
@@ -71,7 +69,6 @@ class Stock(models.Model):
     avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     fair_value = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     price = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
-
 
     # Image fields populated by the PIL "grabimage" functions
     # These fields are not included in the StockForm, since the default handling of an Image Field
@@ -126,3 +123,34 @@ class Stock(models.Model):
             pass
 
         super(Stock, self).save(*args, **kwargs)
+
+
+class Portfolio(models.Model):
+    """
+    Model to capture the basic Portfolio information
+    """
+    CURRENCIES = ( # Currency in which dividend is paid. Some securites that trade in CAD pay dividend in USD
+        ('C', 'CAD'),
+        ('U', 'USD'),
+    )
+
+    portfolio_name = models.CharField(max_length=10, unique=True, primary_key=True)
+    held_at = models.CharField(max_length=50, blank=True, null=True)
+    currency = models.CharField(max_length=1, choices=CURRENCIES, default='C')
+
+    def get_absolute_url(self):
+        """ Displays the values submitted following the DB update """
+        return reverse("portfolioupdate", kwargs={'pk': self.pk})
+
+
+class Holdings(models.Model):
+    """
+    Model to capture holdings in the portfolio
+    """
+
+    portfolio_name = models.ForeignKey("Portfolio", on_delete=models.CASCADE)
+    symbol = models.ForeignKey("Stock", on_delete=models.CASCADE,
+                               related_name='holdings')
+    qty_owned = models.IntegerField(default=0)
+    avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    notes = models.CharField(max_length=100, blank=True, null=True)

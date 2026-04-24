@@ -1,4 +1,4 @@
-"""mytstocks URL Configuration
+"""mystocks URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -31,6 +31,8 @@ urlpatterns = [
     path("analyst/", views.AnalystEntryList.as_view(), name="analyst"),
     path("exdivdate/", views.ExDivDateList.as_view(), name="exdivdate"),
     path("holdinglist/", views.HoldingList.as_view(), name="holdinglist"),
+    path("portfolio/", views.PortfolioCreateView.as_view(), name="portfolio"),
     path("<str:pk>/", views.StockUpdateView.as_view(), name="update"),
+    path("portfolio/<str:pk>/", views.PortfolioUpdateView.as_view(), name="portfolioupdate"),
     path("refresh/<str:symbol>/<int:img>/", views.refresh, name="refresh"),
 ]

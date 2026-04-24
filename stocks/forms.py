@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Stock
+from .models import Stock, Portfolio
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Fieldset, Button, Div
@@ -123,6 +123,28 @@ class StockForm(forms.ModelForm):
             Div(
                 Column('notes', css_class='form_group col-9'),
                 Column('action', css_class='form_group col-3'),
+                css_class='row g-2'
+            ),
+
+            Submit('submit', 'Submit', css_class='mt-2 btn-sm')
+        )
+
+
+class PortfolioForm(forms.ModelForm):
+
+    class Meta:
+        model = Portfolio
+        fields = ['portfolio_name', 'held_at', 'currency']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+
+        self.helper.layout = Layout(
+            Div(
+                Column('portfolio_name', css_class='form_group col-2'),
+                Column('held_at', css_class='form_group col-3'),
+                Column('currency', css_class='form_group col-1'),
                 css_class='row g-2'
             ),
 

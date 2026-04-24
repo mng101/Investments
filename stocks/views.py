@@ -9,8 +9,8 @@ from django.views.generic import (TemplateView, ListView, CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from . import forms
-from .forms import StockForm
-from .models import Stock
+from .forms import StockForm, PortfolioForm
+from .models import Stock, Portfolio
 from django.db.models import F
 
 from io import BytesIO
@@ -51,11 +51,19 @@ class StockCreateView(CreateView):
     form_class = StockForm
     template_name = 'stocks/stock_form.html'
 
-    # success_url = reverse_lazy("home")
-
     def form_valid(self, form):
         form.instance.valid = True
         return super(StockCreateView, self).form_valid(form)
+
+
+class PortfolioCreateView(CreateView):
+    model = Portfolio
+    form_class = PortfolioForm
+    template_name = 'stocks/portfolio_form.html'
+
+    def form_valid(self, form):
+        form.instance.valid = True
+        return super(PortfolioCreateView, self).form_valid(form)
 
 
 class StockUpdateView(UpdateView):
@@ -63,6 +71,13 @@ class StockUpdateView(UpdateView):
     form_class = StockForm
     template_name = "stocks/stock_detail.html"
     context_object_name = "Stock"
+
+
+class PortfolioUpdateView(UpdateView):
+    model = Portfolio
+    form_class = PortfolioForm
+    template_name = 'stocks/portfolio_form.html'
+    context_object_name = "Portfolio"
 
 
 # List the Symbols in the database sorted by the "last_baystreet_entry" date to help

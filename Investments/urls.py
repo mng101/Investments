@@ -27,7 +27,8 @@ urlpatterns = [
 from django.urls import include
 
 urlpatterns += [
-    path('stocks/', include('stocks.urls')),
+    # path('stocks/', include('stocks.urls')),
+    path('', include('stocks.urls')),
 ]
 
 # Add URL maps to redirect the base URL to our catalog application
