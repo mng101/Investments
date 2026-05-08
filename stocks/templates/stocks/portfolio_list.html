@@ -1,0 +1,25 @@
+{% extends 'stocks/base.html' %}
+
+{% block content %}
+
+    <h4>Portfolio List</h4>
+    <br>
+
+    {% if portfolio %}
+        {% for item in portfolio %}
+            <div class="row gx-2">
+                <div class="col-md-2">
+                    <a href="{% url 'holdingslist' pk=item.portfolio_name %}">
+                        {{ item.portfolio_name }}
+                    </a>
+                </div>
+                <div class="col-md-2">{{ item.held_at }}</div>
+                <div class="col-md-1">{{ item.currency }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+
+    <a href="{% url 'portfoliocreate' %}">Add Portfolio</a>
+
+{% endblock %}

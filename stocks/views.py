@@ -9,8 +9,8 @@ from django.views.generic import (TemplateView, ListView, CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from . import forms
-from .forms import StockForm, PortfolioForm
-from .models import Stock, Portfolio
+from .forms import StockForm, PortfolioForm, HoldingForm
+from .models import Stock, Portfolio, Holding
 from django.db.models import F
 
 from io import BytesIO
@@ -33,7 +33,7 @@ class HomePageView(ListView):
     # paginate_by = 20
     template_name = "stocks/home.html"
     context_object_name = "stocks"
-    print("test")
+    # print("test")
 
 
 class SignUp(CreateView):
@@ -59,11 +59,43 @@ class StockCreateView(CreateView):
 class PortfolioCreateView(CreateView):
     model = Portfolio
     form_class = PortfolioForm
+    success_url = reverse_lazy("portfoliolist")
     template_name = 'stocks/portfolio_form.html'
 
+
+class HoldingCreateView(CreateView):
+    model = Holding
+    form_class = HoldingForm
+    # success_url = reverse_lazy("holdingslist")
+    template_name = "stocks/holding_form.html"
+
+    # def get_initial(self):
+    #     print("Get Initial")
+    #     # initial = {'portfolio_name': Portfolio.objects.get(portfolio_name = self.kwargs['pk'])}
+    #     return {'portfolio_name': Portfolio.objects.get(portfolio_name = self.kwargs['pk'])}
+    #     # return self.initial.copy()
+
+    # def get_form_kwargs(self):
+    #     kwargs = super(HoldingCreateView, self).get_form_kwargs()
+    #     # kwargs.update({'portfolio_name': self.request.pk})
+    #     return kwargs
+
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     # kwargs.update({'portfolio_name': self.kwargs.pk})
+    #     # kwargs['portfolio_name'] = self.kwargs.get('pk')
+    #     # kwargs['pk'] = self.kwargs.get('pk')
+    #     return kwargs
+
     def form_valid(self, form):
+        # form.instance.portfolio_name = self.kwargs['pk']
+        form.instance.portfolio_name = Portfolio.objects.get(portfolio_name = self.kwargs['pk'])
         form.instance.valid = True
-        return super(PortfolioCreateView, self).form_valid(form)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect to the HoldingListView after successful Holding input
+        return reverse('holdingslist', kwargs={'pk': self.kwargs['pk']})
 
 
 class StockUpdateView(UpdateView):
@@ -130,15 +162,18 @@ class ExDivDateList(ListView):
         return stocks
 
 
-class HoldingList(ListView):
+class GenericList(ListView):
+    # This is a Generic List View that can be used as a template for other lists
+    # that display the Symbol and ONLY one other data element
+    # The data element listed for the Symbol is annotated as 'data' in the QuerySet to
+    # support a generic template for the list
     model = Stock
     template_name = 'stocks/generic_list.html'
     context_object_name = "stocks"
 
     def get_queryset(self):
-        # Get the list of Stocks in the database sorted by the last_baystreet_entry date.
-        # This helps identify Stocks where the Analyst Ratings may need to be updated
-        # Rename the last_baystreet_entry to data to leverage the generic_list template
+        # This is a sample QuerySet to support the Generic List function
+        # Replace the 'last_baystreet_entry' with the desired data element
         #
         stocks = Stock.objects.annotate(
             data=F('last_baystreet_entry')
@@ -146,11 +181,41 @@ class HoldingList(ListView):
         return stocks
 
 
+class PortfolioListView(ListView):
+    model = Portfolio
+    template_name = "stocks/portfolio_list.html"
+    context_object_name = "portfolio"
+
+    def get_queryset(self):
+        portfolio = Portfolio.objects.order_by("portfolio_name")
+        return portfolio
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["portfolio"] = Portfolio.objects.order_by("portfolio_name")
+    #     return context
+
+
+class HoldingListView(ListView):
+    model = Holding
+    template_name = 'stocks/holdings_list.html'
+    context_object_name = 'holdings'
+
+    def get_queryset(self):
+        holdings = Holding.objects.filter(portfolio_name=self.kwargs['pk'])
+        return holdings
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["portfolio"] = Portfolio.objects.order_by("portfolio_name")
+        return context
+
+
 # Refresh Analyst Ratings for the Stock from the Image captured from the Investment web site
 # Analyst ratings are captured from 2 different web sites and saved with other details of the Stock
 # The date when the Anlayst Rating was refreshed is also captured
 #
-def refresh(request,*args, **kwargs):
+def refresh(request, *args, **kwargs):
     print("Refreshing Image")
     clipboard = ImageGrab.grabclipboard()
 
@@ -166,12 +231,12 @@ def refresh(request,*args, **kwargs):
         new_image = f"{symbol}_{img}.png"
         print("New Image", new_image)
 
-        if (img == 1):
+        if img == 1:
             stock.img1 = new_image
             stock.img1_refreshed_on = datetime.date.today()
             stock.img1.save(new_image, ContentFile(temp_img.read()), save=False)
         else:
-            if (img == 2):
+            if img == 2:
                 stock.img2 = new_image
                 stock.img2_refreshed_on = datetime.date.today()
                 stock.img2.save(new_image, ContentFile(temp_img.read()), save=False)

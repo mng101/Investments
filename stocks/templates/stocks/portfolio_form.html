@@ -5,6 +5,10 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
+    {% if helper %}
+        print {{ helper }}
+    {% endif %}
+
     <div class="container">
         <h5>
             {% if not form.instance.pk %}
@@ -19,6 +23,12 @@
 {# The line {{ form|crispy }} should be removed for the form to function correctly #}
 
         <form method="post" enctype="multipart/form-data">
+            {% if form.helper %}
+                Helper
+            {% else %}
+                No Helper
+            {% endif %}
+
             {% csrf_token %}
             {% crispy form form.helper %}
         </form>

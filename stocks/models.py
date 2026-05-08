@@ -143,14 +143,32 @@ class Portfolio(models.Model):
         return reverse("portfolioupdate", kwargs={'pk': self.pk})
 
 
-class Holdings(models.Model):
+class Holding(models.Model):
     """
     Model to capture holdings in the portfolio
     """
-
     portfolio_name = models.ForeignKey("Portfolio", on_delete=models.CASCADE)
     symbol = models.ForeignKey("Stock", on_delete=models.CASCADE,
-                               related_name='holdings')
+                               related_name='holding')
     qty_owned = models.IntegerField(default=0)
     avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     notes = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        ordering = ["portfolio_name", "symbol"]
+
+    def clean(self):
+        """ For debugging purposes only """
+        # self.symbol = self.symbol.upper()
+        print("In Holding Clean")
+
+    def save(self, *args, **kwargs):
+        print("In Holding Save")
+        # current = Stock.objects.get(symbol=self.symbol)
+
+        # try:
+        #     this = Stock.objects.get(symbol=self.symbol)
+        # except ObjectDoesNotExist:
+        #     pass
+
+        super(Holding, self).save(*args, **kwargs)

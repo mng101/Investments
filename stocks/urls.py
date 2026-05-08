@@ -25,14 +25,25 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="stocks/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("thanks/", views.ThanksPageView.as_view(), name="thanks"),
+    #
     path("stocks/", views.StockCreateView.as_view(), name="stocks"),
     path("create/", views.StockCreateView.as_view(), name="create"),
+    path("refresh/<str:symbol>/<int:img>/", views.refresh, name="refresh"),
+    #
+    path("genericlist/", views.GenericList.as_view(), name="genericlist"),
     path("baystreet/", views.BayStreetEntryList.as_view(), name="baystreet"),
     path("analyst/", views.AnalystEntryList.as_view(), name="analyst"),
     path("exdivdate/", views.ExDivDateList.as_view(), name="exdivdate"),
-    path("holdinglist/", views.HoldingList.as_view(), name="holdinglist"),
-    path("portfolio/", views.PortfolioCreateView.as_view(), name="portfolio"),
-    path("<str:pk>/", views.StockUpdateView.as_view(), name="update"),
+    #
+    path("portfoliocreate/", views.PortfolioCreateView.as_view(), name="portfoliocreate"),
+    path("portfoliolist/", views.PortfolioListView.as_view(), name="portfoliolist"),
     path("portfolio/<str:pk>/", views.PortfolioUpdateView.as_view(), name="portfolioupdate"),
-    path("refresh/<str:symbol>/<int:img>/", views.refresh, name="refresh"),
+    #
+    path("holdingslist/<str:pk>/", views.HoldingListView.as_view(), name="holdingslist"),
+    path("holdingcreate/<str:pk>/", views.HoldingCreateView.as_view(), name="holdingcreate"),
+    #
+    # The following entry must be the last in the list to prevent the URL from
+    # matching calls to other functions defined by a string
+    #
+    path("<str:pk>/", views.StockUpdateView.as_view(), name="update"),
 ]

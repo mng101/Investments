@@ -1,0 +1,39 @@
+{% extends 'stocks/base.html' %}
+
+{% block content %}
+
+{#    <h4>Holdings List for {{ view.kwargs['pk'] }}</h4>#}
+    <h4>Holdings List for
+        <b>
+            {{ view.kwargs.pk }}
+        </b>
+    </h4>
+
+    <br>
+
+{#    <div>#}
+{#    <form method="post">#}
+{#        {% csrf_token %}#}
+{#        <label for="symbol">#}
+{#            <b>Symbol to add to Holdings</b>#}
+{#            &nbsp#}
+{#        </label>#}
+{#        {{ holdings_form }}#}
+{#        <input type="submit" value=" Add " class="btn-sm btn-primary">#}
+{#    </form>#}
+{#    </div>#}
+
+    {% if holdings %}
+        {% for item in holdings %}
+            <div class="row gx-2">
+                <div class="col-md-2">{{ item.symbol }}</div>
+                <div class="col-md-2">{{ item.avg_cost }}</div>
+                <div class="col-md-1">{{ item.qty_owned }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+
+    <a href="{% url 'holdingcreate' pk=view.kwargs.pk %}">Add Holding</a>
+
+{% endblock %}

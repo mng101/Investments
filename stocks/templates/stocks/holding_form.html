@@ -8,9 +8,9 @@
     <div class="container">
         <h5>
             {% if not form.instance.pk %}
-                Create a new Symbol record
+                Create a new Holding record
             {% else %}
-                Update a Symbol
+                Update a Holding
             {% endif %}
         </h5>
         <br>
@@ -18,15 +18,19 @@
 {# This is a minimal template since all the form formatting is done in forms.py using Crispy Forms helpers #}
 {# The line {{ form|crispy }} should be removed for the form to function correctly #}
 
-        <form method="post" enctype="multipart/form-data">
-            {% if helper %}
-                Helper
-            {% else %}
-                 No Helper
-            {% endif %}
+{#        <form method="post" enctype="multipart/form-data">\#}
+        <form method="post">
 
             {% csrf_token %}
-            {% crispy form form.helper %}
+
+            {% if form.helper %}
+                Helper
+                {% crispy form form.helper %}
+            {% else %}
+                No Helper
+                {% crispy form %}
+            {% endif %}
+
         </form>
     </div>
 
