@@ -30,12 +30,7 @@ class StockForm(forms.ModelForm):
 
     class Meta:
         model = Stock
-        # fields = '__all__'
-        # fields = ['symbol', 'name', 'industry', 'notes', 'img1', 'img2']
-        # fields img1 and img2 were removed from the forms class to avoid the default display
-        # of the file path to be uploaded to the image field.
-        # The Image content is being copied from the clipboard using the PIL "grabclipboard" function
-        #
+
         fields = ['symbol', 'name', 'industry', 'lseg', 'ibes_mean', 'count', 'quant', 'analyst', 'qty',
                   'ex_div_date', 'dividend', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
                   'avg_cost', 'price', 'fair_value',
@@ -64,7 +59,7 @@ class StockForm(forms.ModelForm):
             #            'pattern': '[0-9]*'
             #     }),
             #
-            #
+
             'dividend': forms.TextInput(attrs={
                 'step': '0.0001',
                 'style': 'text-align: right'
@@ -108,7 +103,7 @@ class StockForm(forms.ModelForm):
                 Column('qty', css_class='form_group col-1'),
                 Column('avg_cost', css_class='form_group col-1'),
                 css_class='row g-2'
-            ) ,
+            ),
             Div(
                 Column('ex_div_date', css_class='form_group col-2'),
                 Column('dividend', css_class='form_group col-1'),
@@ -174,7 +169,6 @@ class HoldingForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        # self.portfolio_name = kwargs.pop('portfolio_name', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -194,31 +188,4 @@ class HoldingForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        # s = Holding.objects.filter(portfolio_name=self.kwargs.pk,
-        #                            symbol = symbol)
         return cleaned_data
-
-#
-# class HoldingForm(forms.ModelForm):
-#       DUPLICATE
-#
-#     class Meta:
-#         model = Holding
-#         fields = ['notes',]
-#
-#         widgets = {
-#             'notes': Textarea(attrs={'rows': 2}),
-#         }
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.helper = FormHelper()
-#
-#         self.helper.layout = Layout (
-#             Div (
-#                 Column('notes', css_class='form_group col-5'),
-#                 css_class='row g-2',
-#             ),
-#
-#             Submit('submit', 'Submit', css_class="mt-2 btn-sm")
-#         )

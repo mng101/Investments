@@ -114,8 +114,7 @@ class Stock(models.Model):
         self.symbol = self.symbol.upper()
 
     def save(self, *args, **kwargs):
-        print("In Stock Save")
-        # current = Stock.objects.get(symbol=self.symbol)
+        # print("In Stock Save")
 
         try:
             this = Stock.objects.get(symbol=self.symbol)
@@ -159,16 +158,8 @@ class Holding(models.Model):
 
     def clean(self):
         """ For debugging purposes only """
-        # self.symbol = self.symbol.upper()
-        print("In Holding Clean")
+        # print("In Holding Clean")
 
     def save(self, *args, **kwargs):
-        print("In Holding Save")
-        # current = Stock.objects.get(symbol=self.symbol)
-
-        # try:
-        #     this = Stock.objects.get(symbol=self.symbol)
-        # except ObjectDoesNotExist:
-        #     pass
-
+        # print("In Holding Save")
         super(Holding, self).save(*args, **kwargs)

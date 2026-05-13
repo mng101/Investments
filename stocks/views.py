@@ -19,21 +19,11 @@ import datetime
 
 # Create your views here.
 
-# class HomePageView(TemplateView):
-#     template_name = "stocks/home.html"
-#     print("HomePageView")
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         return context
-
 
 class HomePageView(ListView):
     model = Stock
-    # paginate_by = 20
     template_name = "stocks/home.html"
     context_object_name = "stocks"
-    # print("test")
 
 
 class SignUp(CreateView):
@@ -66,36 +56,17 @@ class PortfolioCreateView(CreateView):
 class HoldingCreateView(CreateView):
     model = Holding
     form_class = HoldingForm
-    # success_url = reverse_lazy("holdingslist")
     template_name = "stocks/holding_form.html"
-
-    # def get_initial(self):
-    #     print("Get Initial")
-    #     # initial = {'portfolio_name': Portfolio.objects.get(portfolio_name = self.kwargs['pk'])}
-    #     return {'portfolio_name': Portfolio.objects.get(portfolio_name = self.kwargs['pk'])}
-    #     # return self.initial.copy()
-
-    # def get_form_kwargs(self):
-    #     kwargs = super(HoldingCreateView, self).get_form_kwargs()
-    #     # kwargs.update({'portfolio_name': self.request.pk})
-    #     return kwargs
-
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     # kwargs.update({'portfolio_name': self.kwargs.pk})
-    #     # kwargs['portfolio_name'] = self.kwargs.get('pk')
-    #     # kwargs['pk'] = self.kwargs.get('pk')
-    #     return kwargs
 
     def form_valid(self, form):
         # form.instance.portfolio_name = self.kwargs['pk']
-        form.instance.portfolio_name = Portfolio.objects.get(portfolio_name = self.kwargs['pk'])
+        form.instance.portfolio_name = Portfolio.objects.get(portfolio_name=self.kwargs['pk'])
         form.instance.valid = True
         return super().form_valid(form)
 
     def get_success_url(self):
         # Redirect to the HoldingListView after successful Holding input
-        return reverse('holdingslist', kwargs={'pk': self.kwargs['pk']})
+        return reverse('holdingslist', kwargs={'pk': self.kwargs.pk})
 
 
 class StockUpdateView(UpdateView):
@@ -190,11 +161,6 @@ class PortfolioListView(ListView):
         portfolio = Portfolio.objects.order_by("portfolio_name")
         return portfolio
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["portfolio"] = Portfolio.objects.order_by("portfolio_name")
-    #     return context
-
 
 class HoldingListView(ListView):
     model = Holding
@@ -216,7 +182,7 @@ class HoldingListView(ListView):
 # The date when the Anlayst Rating was refreshed is also captured
 #
 def refresh(request, *args, **kwargs):
-    print("Refreshing Image")
+    # print("Refreshing Image")
     clipboard = ImageGrab.grabclipboard()
 
     if clipboard != "None":
@@ -229,7 +195,7 @@ def refresh(request, *args, **kwargs):
         clipboard.save(temp_img, format="PNG", optimize=True)
         temp_img.seek(0)
         new_image = f"{symbol}_{img}.png"
-        print("New Image", new_image)
+        # print("New Image", new_image)
 
         if img == 1:
             stock.img1 = new_image
