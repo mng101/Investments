@@ -176,7 +176,7 @@ class HoldingForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 # Column('portfolio_name', css_class='form_group col-1'),
-                Column('symbol', css_class='form_group col-2'),
+                Column('symbol', css_class='form_group col-1'),
                 Column('qty_owned', css_class='form_group col-1'),
                 Column('avg_cost', css_class='form_group col-1'),
                 Column('notes', css_class='form_group col-5'),

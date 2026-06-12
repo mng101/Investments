@@ -103,7 +103,8 @@ class Stock(models.Model):
         ordering = ["symbol"]
 
     def __str__(self):
-        return f"{self.symbol} - {self.name}"
+        # return f"{self.symbol} - {self.name}"
+        return f"{self.symbol}"
 
     def get_absolute_url(self):
         """ Displays the values submitted following the DB update """

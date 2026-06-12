@@ -5,19 +5,44 @@
     <h4>Portfolio List</h4>
     <br>
 
-    {% if portfolio %}
-        {% for item in portfolio %}
-            <div class="row gx-2">
-                <div class="col-md-2">
-                    <a href="{% url 'holdingslist' pk=item.portfolio_name %}">
-                        {{ item.portfolio_name }}
-                    </a>
-                </div>
-                <div class="col-md-2">{{ item.held_at }}</div>
-                <div class="col-md-1">{{ item.currency }}</div>
-            </div>
-        {% endfor %}
-    {% endif %}
+    <div class="col-lg-3 col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-md-1">Portfolio</th>
+                    <th class="col-md-1">Held At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if portfolio %}
+                    {% for item in portfolio %}
+                        <tr>
+                            <th class="col-md-1">
+                                <a href="{% url 'holdinglist' pk=item.portfolio_name %}">
+                                    {{ item.portfolio_name }}
+                                </a>
+                            </th>
+                            <td class="col-md-1">{{ item.held_at }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+{#    {% if portfolio %}#}
+{#        {% for item in portfolio %}#}
+{#            <div class="row gx-2">#}
+{#                <div class="col-md-2">#}
+{#                    <a href="{% url 'holdinglist' pk=item.portfolio_name %}">#}
+{#                        {{ item.portfolio_name }}#}
+{#                    </a>#}
+{#                </div>#}
+{#                <div class="col-md-2">{{ item.held_at }}</div>#}
+{#                <div class="col-md-1">{{ item.currency }}</div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
     <br>
 
     <a href="{% url 'portfoliocreate' %}">Add Portfolio</a>

@@ -39,8 +39,9 @@ urlpatterns = [
     path("portfoliolist/", views.PortfolioListView.as_view(), name="portfoliolist"),
     path("portfolio/<str:pk>/", views.PortfolioUpdateView.as_view(), name="portfolioupdate"),
     #
-    path("holdingslist/<str:pk>/", views.HoldingListView.as_view(), name="holdingslist"),
+    path("holdinglist/<str:pk>/", views.HoldingListView.as_view(), name="holdinglist"),
     path("holdingcreate/<str:pk>/", views.HoldingCreateView.as_view(), name="holdingcreate"),
+    path("holdingupdate/<str:portfolio>/<str:symbol>/", views.HoldingUpdateView.as_view(), name="holdingupdate"),
     #
     # The following entry must be the last in the list to prevent the URL from
     # matching calls to other functions defined by a string

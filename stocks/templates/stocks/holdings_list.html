@@ -10,21 +10,57 @@
 
     <br>
 
-    <div class="row holding-header-row gx-2">
-        <div class="col-md-2">Symbol</div>
-        <div class="col-md-1 text-end">Qty Owned</div>
-        <div class="col-md-1 text-end">Avg Cost</div>
+    <div class="col-lg-3 col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-md-1">Symbol</th>
+                    <th class="col-md-1 text-end">Quantity</th>
+                    <th class="col-md-1 text-end">Avg Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if holdings %}
+                    {% for item in holdings %}
+                        <tr>
+                            <th class="col-md-1">
+                                <a href="{% url 'holdingupdate' portfolio=view.kwargs.pk symbol=item.symbol %}">
+                                    {{ item.symbol }}
+                                </a>
+                            </th>
+                            <td class="col-md-1 text-end">{{ item.qty_owned }}</td>
+                            <td class="col-md-1 text-end">{{ item.avg_cost }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 
-    {% if holdings %}
-        {% for item in holdings %}
-            <div class="row gx-2">
-                <div class="col-md-2">{{ item.symbol }}</div>
-                <div class="col-md-1 text-end">{{ item.qty_owned }}</div>
-                <div class="col-md-1 text-end">{{ item.avg_cost }}</div>
-            </div>
-        {% endfor %}
-    {% endif %}
+{#    <table class="table table-striped">#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th class="col-1">Symbol</th>#}
+{#                <th class="col-1">Qty Owned</th>#}
+{#                <th class="col-1">Avg Cost</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#            {% if holdings %}#}
+{#                {% for item in holdings %}#}
+{#                <tr>#}
+{#                    <td class="col-1">#}
+{#                        <a href="{% url 'holdingupdate' portfolio=view.kwargs.pk symbol=item.symbol %}">#}
+{#                        {{ item.symbol }}#}
+{#                    </td>#}
+{#                    <td class="col-1 text-end">{{ item.qty_owned }}</td>#}
+{#                    <td class="col-1 text-end">{{ item.avg_cost }}</td>#}
+{#                </tr>#}
+{#                {% endfor %}#}
+{#            {% endif %}#}
+{#        </tbody>#}
+{#    </table>#}
+
     <br>
 
     <a href="{% url 'holdingcreate' pk=view.kwargs.pk %}">Add Holding</a>

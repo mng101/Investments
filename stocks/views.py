@@ -66,7 +66,7 @@ class HoldingCreateView(CreateView):
 
     def get_success_url(self):
         # Redirect to the HoldingListView after successful Holding input
-        return reverse('holdingslist', kwargs={'pk': self.kwargs.pk})
+        return reverse('holdinglist', kwargs={'pk': self.kwargs['pk']})
 
 
 class StockUpdateView(UpdateView):
@@ -175,6 +175,23 @@ class HoldingListView(ListView):
         context = super().get_context_data(**kwargs)
         context["portfolio"] = Portfolio.objects.order_by("portfolio_name")
         return context
+
+
+class HoldingUpdateView(UpdateView):
+    model = Holding
+    form_class = HoldingForm
+    template_name = 'stocks/holding_form.html'
+    context_object_name = 'holding'
+
+    def get_object(self):
+        ("Getting object")
+        holding = Holding.objects.get(portfolio_name=self.kwargs["portfolio"], symbol=self.kwargs["symbol"])
+        return holding
+
+    def get_success_url(self):
+        # Redirect to the HoldingListView after successful Holding update
+        print("get_success_url")
+        return reverse('holdinglist', kwargs={'pk': self.kwargs['portfolio']})
 
 
 # Refresh Analyst Ratings for the Stock from the Image captured from the Investment web site
