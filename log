@@ -1,0 +1,25 @@
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 06, 2026 - 10:14:18
+Django version 4.2.26, using settings 'Investments.settings'
+Starting development server at http://127.0.0.1:2/
+Quit the server with CTRL-BREAK.
+
+3] "GET /favicon.ico/ HTTP/1.1" 404 5901
+[06/Aug/2026 10:17:17] "POST /create/ HTTP/1.1" 200 13207
+[06/Aug/2026 10:17:17] "GET /favicon.ico HTTP/1.1" 301 0
+Not Found: /favicon.ico/
+[06/Aug/2026 10:17:17] "GET /favicon.ico/ HTTP/1.1" 404 5901
+[06/Aug/2026 10:19:15] "POST /create/ HTTP/1.1" 200 13315
+[06/Aug/2026 10:19:15] "GET /favicon.ico HTTP/1.1" 301 0
+[06/Aug/2026 10:19:24] "POST /create/ HTTP/1.1" 200 13315
+[06/Aug/2026 10:19:24] "GET /favicon.ico HTTP/1.1" 301 0
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 06, 2026 - 10:15:49
+Django version 4.2.26, using settings 'Investments.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+

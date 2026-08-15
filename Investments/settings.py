@@ -25,6 +25,12 @@ SECRET_KEY = 'django-insecure-^t4(k6l@5757y+$)d0towxzz@-e&7@*iooyea0$4v-t34!n12w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Import Rapid API key from local_settings.py
+try:
+    from .local_settings import *
+except ImportError:
+    pass  # No local_settings file
+
 ALLOWED_HOSTS = []
 
 

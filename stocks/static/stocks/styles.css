@@ -53,7 +53,7 @@ body {
 }
 
 .img {
-  left-margin: 50px;
+  margin-left: 50px;
   width: 1000px;
 }
 
@@ -67,7 +67,7 @@ Posted by Norman Bird, modified by community. See post 'Timeline' for change his
 Retrieved 2026-05-26, License - CC BY-SA 3.0
 */
 table th {
-  width: auto !important;
+  min-width: 100px;
 }
 
 /*# sourceMappingURL=styles.css.map */

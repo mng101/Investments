@@ -11,6 +11,7 @@ from datetime import date
 #
 from django.contrib.auth.models import AbstractUser
 
+
 class User(AbstractUser):
     pass
 
@@ -20,14 +21,16 @@ class Stock(models.Model):
     Model to capture some details of Stocks to be tracked
     """
 
-    FREQUENCIES = ( # dividend frequency
+    FREQUENCIES = (
+        # dividend frequency
         ('M', 'Monthly'),
         ('Q', 'Quarterly'),
         ('S', 'Semi-Annual'),
         ('A', 'Annually'),
     )
 
-    CURRENCIES = ( # Currency in which dividend is paid. Some securites that trade in CAD pay dividend in USD
+    CURRENCIES = (
+        # Currency in which dividend is paid. Some securites that trade in CAD pay dividend in USD
         ('C', 'CAD'),
         ('U', 'USD'),
     )
@@ -42,9 +45,10 @@ class Stock(models.Model):
         ('5', '5*'),
     )
 
-    # Symbol Details
+    # General Information and Ratings of the Stock
     #
     symbol = models.CharField(max_length=12, unique=True, primary_key=True)
+    exchange = models.CharField(max_length=5, null=True, blank=True, default=".TO")
     name = models.CharField(max_length=100)
     industry = models.CharField(max_length=100)
     lseg = models.CharField(max_length=2, null=True, blank=True)
@@ -52,23 +56,55 @@ class Stock(models.Model):
     count = models.CharField(max_length=2, default=0)
     quant = models.CharField(max_length=2, choices=RATINGS, default=0)
     analyst = models.CharField(max_length=2, choices=RATINGS, default=0)
+    fair_value = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
 
-    # Portfolio Details
+    # Dividend Information
     #
     ex_div_date = models.DateField(default=date.today)
-    dividend = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000)
+    dividend_rate = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000, verbose_name="Div Amount")
+    dividend_yield = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, default='Q')
     currency = models.CharField(max_length=1, choices=CURRENCIES, default='C')
+
+    # Pricing Information
+    #
+    api_data = models.CharField(max_length=1, default='Y')      # Data availble from RapidAPI
+    prev_close = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    high52w = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    low52w = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    target_high = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    target_low = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    fifty_day_avg_change = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
+    two_hundred_day_avg_change = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
+
+    # Calculated Fields
+    #
+    @property
+    def upside(self):
+        # return (((self.target_high - self.target_low)/2 - self.prev_close) / self.prev_close)
+        if self.target_high > 0:
+            return ((self.target_high - self.prev_close) / self.target_high) * 100
+        else:
+            return 0.00
+
+    @property
+    def to_52w_high(self):
+        return self.high52w - self.prev_close
+
+    trading = models.DecimalField(max_digits=4, decimal_places=1, default=0.0)
+    target = models.DecimalField(max_digits=4, decimal_places=1, default=0.0)
+
+    # Dates when Analyst target were captured
+    #
     last_baystreet_entry = models.DateField(default="2025-07-01")
     last_analyst_entry = models.DateField(default="2025-07-01")
 
     notes = models.CharField(max_length=1024, blank=True)
     action = models.CharField(max_length=200, blank=True)
 
-    qty = models.IntegerField(default=0)
-    avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
-    fair_value = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
-    price = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    # qty = models.IntegerField(default=0)
+    # avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    # price = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
 
     # Image fields populated by the PIL "grabimage" functions
     # These fields are not included in the StockForm, since the default handling of an Image Field
@@ -81,7 +117,8 @@ class Stock(models.Model):
     # Recommendation update dates to 2030-12-31 through the Admin interface so that these securities
     # can be filtered out in selected views
 
-    img1 = models.ImageField( # Bay Street Analyst price targets BMOIL site
+    img1 = models.ImageField(
+        # Bay Street Analyst price targets BMOIL site
         upload_to='stocks/',
         default='stocks/Default1.png',
         null="True", blank="True"
@@ -90,7 +127,7 @@ class Stock(models.Model):
     img1_refreshed_on = models.DateField(default='2025-01-01')
     # img1_last_analyst_entry = models.DateField(default="2025-01-01")
 
-    img2 = models.ImageField( # Analyst price target on Webbroker site
+    img2 = models.ImageField(       # Analyst price target on Webbroker site
         upload_to='stocks/',
         default='stocks/Default2.png',
         null="True", blank="True"
@@ -115,8 +152,9 @@ class Stock(models.Model):
         self.symbol = self.symbol.upper()
 
     def save(self, *args, **kwargs):
-        # print("In Stock Save")
-
+        #
+        # Make sure that we are not duplicating the Stock entry for a symbol
+        #
         try:
             this = Stock.objects.get(symbol=self.symbol)
         except ObjectDoesNotExist:
@@ -129,7 +167,7 @@ class Portfolio(models.Model):
     """
     Model to capture the basic Portfolio information
     """
-    CURRENCIES = ( # Currency in which dividend is paid. Some securites that trade in CAD pay dividend in USD
+    CURRENCIES = (      # Currency in which dividend is paid. Some securites that trade in CAD pay dividend in USD
         ('C', 'CAD'),
         ('U', 'USD'),
     )
@@ -153,6 +191,11 @@ class Holding(models.Model):
     qty_owned = models.IntegerField(default=0)
     avg_cost = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     notes = models.CharField(max_length=100, blank=True, null=True)
+
+    @property
+    def gain(self):
+        return (self.symbol.prev_close - self.avg_cost)
+
 
     class Meta:
         ordering = ["portfolio_name", "symbol"]

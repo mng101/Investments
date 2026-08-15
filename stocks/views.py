@@ -6,16 +6,18 @@ from django.contrib.auth import views as auth_views
 
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (TemplateView, ListView, CreateView, UpdateView, DetailView)
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 
 from . import forms
 from .forms import StockForm, PortfolioForm, HoldingForm
 from .models import Stock, Portfolio, Holding
+from . import utils
 from django.db.models import F
 
 from io import BytesIO
 from PIL import ImageGrab
 import datetime
+import time
 
 # Create your views here.
 
@@ -169,11 +171,35 @@ class HoldingListView(ListView):
 
     def get_queryset(self):
         holdings = Holding.objects.filter(portfolio_name=self.kwargs['pk'])
+
+        """
+        Enrich the Holdings with the current price, and 52week and target price range. This will help determine 
+        if the stock is a hold or sell.
+        """
+        # combined_list = utils.enrich(self.request, holdings)
+
         return holdings
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["portfolio"] = Portfolio.objects.order_by("portfolio_name")
+        """
+            Add calculated fields to the context
+        """
+
+        # if context["holdings"] is not None:
+        #     for item in context["holdings"]:
+        #         # print(item.symbol)
+        #         item["gain"] = (item.symbol.prev_close - item.avg_cost)
+
+        # for item in context:
+        #     try:
+        #         item.update(
+        #             {"gain": (item["symbol"]["prev_close"] - item.avg_cost)}
+        #
+        #         )
+        #     except:
+        #         pass
+
         return context
 
 
@@ -183,20 +209,33 @@ class HoldingUpdateView(UpdateView):
     template_name = 'stocks/holding_form.html'
     context_object_name = 'holding'
 
-    def get_object(self):
-        ("Getting object")
+    def get_object(self, queryset=None):
+        # ("Getting object")
         holding = Holding.objects.get(portfolio_name=self.kwargs["portfolio"], symbol=self.kwargs["symbol"])
         return holding
 
     def get_success_url(self):
         # Redirect to the HoldingListView after successful Holding update
-        print("get_success_url")
+        # print("get_success_url")
         return reverse('holdinglist', kwargs={'pk': self.kwargs['portfolio']})
+
+
+def holding_remove(request, **kwargs):
+    """
+    Remove the selected item from the list of Holdings
+    """
+    try:
+        item = Holding.objects.get(id=kwargs['pk'])
+        item.delete()
+    except Holding.DoesNotExist:
+        raise Http404("Holding does not exist")
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 # Refresh Analyst Ratings for the Stock from the Image captured from the Investment web site
 # Analyst ratings are captured from 2 different web sites and saved with other details of the Stock
-# The date when the Anlayst Rating was refreshed is also captured
+# The date when the last Anlayst Rating was updated is also captured
 #
 def refresh(request, *args, **kwargs):
     # print("Refreshing Image")
@@ -226,4 +265,102 @@ def refresh(request, *args, **kwargs):
 
         stock.save()
 
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# Update all Stocks in the database with market data retrieved from the Yahoo Finance API. This operations is to be
+# triggered weekly to limit the number of requests being made to the API.
+#
+def market_data(request, *args, **kwargs):
+    #
+    # Get a list of Stocks recorded in the database. Limit to the first 10 during the pilot phase
+    # all_stocks = Stock.objects.exclude(api_data="Y")
+    all_stocks = Stock.objects.all()
+
+    # For each item in the list combine the symbol and the exchange to create the symbol format
+    # suitable for the Yahoo Finance API. Call the utils.get_quotes utility to fetch quotes for each symbol
+
+    for item in all_stocks:
+        if item.exchange is not None:
+            full_symbol = item.symbol + item.exchange
+            region = "CA"
+        else:
+            full_symbol = item.symbol
+            region = "US"
+
+        print("Quote for " + full_symbol + " " + region)
+
+        quote = utils.get_quotes(request, region, full_symbol)
+
+        # Update the Stock record with the data retrieved from the API
+        #
+        if quote:
+            # print(item.symbol + "Data Retrieved")
+            try:
+                item.prev_close = quote[0]["regularMarketPrice"]
+            except KeyError:
+                print("KeyError regularMarketPrice")
+                pass
+            try:
+                item.high52w = quote[0]["fiftyTwoWeekHigh"]
+            except KeyError:
+                pass
+            try:
+                item.low52w = quote[0]["fiftyTwoWeekLow"]
+            except KeyError:
+                pass
+            try:
+                item.target_high = quote[0]["targetPriceHigh"]
+            except KeyError:
+                pass
+            try:
+                item.target_low = quote[0]["targetPriceLow"]
+            except KeyError:
+                pass
+
+            # Compute the position of the Stock, in the 52week trading range, and in relation to the targetPriceHigh.
+            # These values are only calculated when market data is refreshed from RapidAPI. These values help
+            # determine when the position should be partially or completely closed to realize the profit
+            #
+            # try:
+            #     item.trading = ((quote[0]["regularMarketPrice"] - quote[0]["fiftyTwoWeekLow"])
+            #                     / (quote[0]["fiftyTwoWeekHigh"] - quote[0]["fiftyTwoWeekLow"])) * 100
+            # except ZeroDivisionError:
+            #     pass
+            # except KeyError:
+            #     pass
+            #
+            # try:
+            #     # item.target = ((quote[0]["regularMarketPrice"] - quote[0]["targetPriceLow"])
+            #     #                / (quote[0]["targetPriceHigh"] - quote[0]["targetPriceLow"])) * 100
+            #     item.target = ((quote[0]["regularMarketPrice"] / quote[0]["targetPriceHigh"])) * 100
+            # except ZeroDivisionError:
+            #     pass
+            # except KeyError:
+            #     pass
+
+            try:
+                item.dividend_yield = quote[0]["dividendYield"]
+            except KeyError:
+                pass
+
+            try:
+                item.dividend_rate = quote[0]["dividendRate"]
+            except KeyError:
+                pass
+
+            try:
+                date_obj = datetime.datetime.fromtimestamp(quote[0]["exDividendDate"]).date()
+                item.ex_div_date = date_obj
+            except KeyError:
+                pass
+
+            # Save the Stock record
+            #
+            item.save()
+        else:
+            print("No quote " + item.symbol)
+
+    time.sleep(1)
+    print("done")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

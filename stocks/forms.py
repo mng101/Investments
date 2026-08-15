@@ -31,9 +31,16 @@ class StockForm(forms.ModelForm):
     class Meta:
         model = Stock
 
-        fields = ['symbol', 'name', 'industry', 'lseg', 'ibes_mean', 'count', 'quant', 'analyst', 'qty',
-                  'ex_div_date', 'dividend', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
-                  'avg_cost', 'price', 'fair_value',
+        # fields = ['symbol', 'name', 'industry', 'lseg', 'ibes_mean', 'count', 'quant', 'analyst', 'qty',
+        #           'ex_div_date', 'dividend', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
+        #           'avg_cost', 'price', 'fair_value',
+        #           'notes', 'action', ]
+
+        fields = ['symbol', 'exchange', 'name', 'industry', 'lseg', 'ibes_mean', 'count', 'quant', 'analyst',
+                  'ex_div_date', 'dividend_rate', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
+                  # 'price', 'fair_value',
+                  'fair_value', 'api_data',
+                  'prev_close', 'high52w', 'low52w', 'target_high', 'target_low', 'trading', 'target',
                   'notes', 'action', ]
 
         # Image fields are populated by the PIL "grabimage" functions
@@ -60,23 +67,51 @@ class StockForm(forms.ModelForm):
             #     }),
             #
 
-            'dividend': forms.TextInput(attrs={
+            'dividend_rate': forms.TextInput(attrs={
                 'step': '0.0001',
                 'style': 'text-align: right'
             }),
-            'qty': forms.TextInput(attrs={
-                'step': '1',
-                'style': 'text-align: right'
-            }),
-            'avg_cost': forms.TextInput(attrs={
-                'step': '0.001',
-                'style': 'text-align: right'
-            }),
+            # 'qty': forms.TextInput(attrs={
+            #     'step': '1',
+            #     'style': 'text-align: right'
+            # }),
+            # 'avg_cost': forms.TextInput(attrs={
+            #     'step': '0.001',
+            #     'style': 'text-align: right'
+            # }),
             'price': forms.TextInput(attrs={
                 'step': '0.001',
                 'style': 'text-align: right'
             }),
             'fair_value': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'prev_close': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'high52w': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'low52w': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'target_high': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'target_low': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'trading': forms.TextInput(attrs={
+                'step': '0.001',
+                'style': 'text-align: right',
+            }),
+            'target': forms.TextInput(attrs={
                 'step': '0.001',
                 'style': 'text-align: right',
             }),
@@ -93,6 +128,7 @@ class StockForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Column('symbol', css_class='form_group col-1'),
+                Column('exchange', css_class='form_group col-1'),
                 Column('name', css_class='form_group col-2'),
                 Column('industry', css_class='form_group col-2'),
                 Column('lseg', css_class='form_group col-1'),
@@ -100,19 +136,31 @@ class StockForm(forms.ModelForm):
                 Column('count', css_class='form_group col-1'),
                 Column('quant', css_class='form_group col-1'),
                 Column('analyst', css_class='form_group col-1'),
-                Column('qty', css_class='form_group col-1'),
-                Column('avg_cost', css_class='form_group col-1'),
+                # Column('qty', css_class='form_group col-1'),
+                # Column('avg_cost', css_class='form_group col-1'),
                 css_class='row g-2'
             ),
             Div(
                 Column('ex_div_date', css_class='form_group col-2'),
-                Column('dividend', css_class='form_group col-1'),
+                Column('dividend_rate', css_class='form_group col-1'),
                 Column('currency', css_class='form_group col-1'),
                 Column('frequency', css_class='form_group col-2'),
                 Column('last_baystreet_entry', css_class='form_group col-2'),
                 Column('last_analyst_entry', css_class='form_group col-2'),
-                Column('price', css_class='form_group col-1'),
+                # Column('price', css_class='form_group col-1'),
                 Column('fair_value', css_class='form_group col-1'),
+                Column('api_data', css_class='form_group col-1'),
+                css_class='row g-2'
+            ),
+            Div(
+                # Column('data', css_class='form_group col-1'),
+                Column('prev_close', css_class='form_group col-1'),
+                Column('high52w', css_class='form_group col-1'),
+                Column('low52w', css_class='form_group col-1'),
+                Column('target_high', css_class='form_group col-1'),
+                Column('target_low', css_class='form_group col-1'),
+                Column('trading', css_class="form_group col-1"),
+                Column('target', css_class="form_group col-1"),
                 css_class='row g-2'
             ),
             Div(

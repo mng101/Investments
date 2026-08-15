@@ -14,9 +14,21 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-md-1">Symbol</th>
+                    <th style="min-width:90px" class="col-md-1">Symbol</th>
                     <th class="col-md-1 text-end">Quantity</th>
-                    <th class="col-md-1 text-end">Avg Cost</th>
+                    <th style="min-width:75px" class="text-end">Avg Cost</th>
+                    <th style="min-width:75px" class="text-end">Price</th>
+                    <th style="min-width:75px" class="text-end">Gain</th>
+                    <th style="min-width:75px" class="text-end">Upside</th>
+                    <th style="min-width:75px" class="text-end">Target High</th>
+                    <th style="min-width:75px" class="text-end">52w High</th>
+{#                    <th style="..." class="col-md-1 text-end">To 52wHigh</th>#}
+{#                    <th style="min-width:75p" class="col-md-1 text-end">52week Range</th>#}
+{#                    <th style="min-width:75px" class="col-md-1 text-end">To Target</th>#}
+                    <th style="min-width:75px" class="text-end">Div Yield</th>
+                    <th style="min-width:75px" class="text-end">Div Rate</th>
+                    <th style="min-width:75px" class="text-end">ExDiv Date</th>
+                    <th class="col-md-1 text-end">Remove</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +41,21 @@
                                 </a>
                             </th>
                             <td class="col-md-1 text-end">{{ item.qty_owned }}</td>
-                            <td class="col-md-1 text-end">{{ item.avg_cost }}</td>
+                            <td class="col-md-1 text-end">{{ item.avg_cost | floatformat:2 }}</td>
+                            <td class="col-md-1 text-end">{{ item.symbol.prev_close | floatformat:2 }}</td>
+                            <td class="col-md-1 text-end">{{ item.gain | floatformat:2 }}</td>
+                            <td class="col-md-1 text-end">{{ item.symbol.upside | floatformat:1 }}%</td>
+                            <td class="col-md-1 text-end">{{ item.symbol.target_high | floatformat:2 }}</td>
+                            <td class="col-md-1 text-end">{{ item.symbol.high52w | floatformat:2 }}</td>
+{#                            <td class="col-md-1 text-end">{{ item.symbol.to_52w_high | floatformat:1 }}</td>#}
+{#                            <td class="col-md-1 text-end">{{ item.symbol.trading }}</td>#}
+{#                            <td class="col-md-1 text-end">{{ item.symbol.target }}</td>#}
+                            <td class="col-md-1 text-end">{{ item.symbol.dividend_yield }}%</td>
+                            <td class="col-md-1 text-end">$ {{ item.symbol.dividend_rate | floatformat:2 }}</td>
+                            <td class="col-md-1 text-end">{{ item.symbol.ex_div_date | date:"m-d" }}</td>
+                            <td class="col-md-1 text-center">
+                                <a href="{% url "holding_remove" item.id %}"><b>X</b></a>
+                            </td>
                         </tr>
                     {% endfor %}
                 {% endif %}

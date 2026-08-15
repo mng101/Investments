@@ -17,7 +17,7 @@ media
 /__ Backups/
 
 # RAPID API Keys saved in local_settings.py file
-# local_settings.py
+local_settings.py
 
  PyCharm files #
  .idea/**/workspace.xml
