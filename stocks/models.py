@@ -61,7 +61,7 @@ class Stock(models.Model):
     # Dividend Information
     #
     ex_div_date = models.DateField(default=date.today)
-    dividend_rate = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000, verbose_name="Div Amount")
+    dividend_rate = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000, verbose_name="Div Rate")
     dividend_yield = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, default='Q')
     currency = models.CharField(max_length=1, choices=CURRENCIES, default='C')
@@ -72,18 +72,45 @@ class Stock(models.Model):
     prev_close = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     high52w = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     low52w = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
-    target_high = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
+    target_high = models.DecimalField(max_digits=7, decimal_places=3, default=0.000, verbose_name="Target Hi")
     target_low = models.DecimalField(max_digits=7, decimal_places=3, default=0.000)
     fifty_day_avg_change = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
     two_hundred_day_avg_change = models.DecimalField(max_digits=4, decimal_places=2, default=0.00)
 
     # Calculated Fields
     #
+    # @property
+    # def mid_target(self):
+    #     # Mid point between target high and target low
+    #     if self.target_high > 0:
+    #         return ((self.target_high + self.target_low) / 2)
+    #     else:
+    #         return 0.00
+
+    @property
+    def mid_target(self):
+        if self.target_low == 0:
+            return self.target_high
+        else:
+            if self.target_high > 0:
+                return ((self.target_high + self.target_low) / 2)
+            else:
+                return 0.00
+
+
+    # @property
+    # def upside(self):
+    #     # return (((self.target_high - self.target_low)/2 - self.prev_close) / self.prev_close)
+    #     if self.target_high > 0:
+    #         return ((self.target_high - self.prev_close) / self.target_high) * 100
+    #     else:
+    #         return 0.00
+
     @property
     def upside(self):
-        # return (((self.target_high - self.target_low)/2 - self.prev_close) / self.prev_close)
-        if self.target_high > 0:
-            return ((self.target_high - self.prev_close) / self.target_high) * 100
+        # Calculate the potential Upside to the mid poing between High and Low targets
+        if self.mid_target > 0:
+            return ((self.mid_target - self.prev_close) / self.mid_target) * 100
         else:
             return 0.00
 

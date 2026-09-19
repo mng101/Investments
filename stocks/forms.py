@@ -40,7 +40,8 @@ class StockForm(forms.ModelForm):
                   'ex_div_date', 'dividend_rate', 'frequency', 'currency', 'last_baystreet_entry', 'last_analyst_entry',
                   # 'price', 'fair_value',
                   'fair_value', 'api_data',
-                  'prev_close', 'high52w', 'low52w', 'target_high', 'target_low', 'trading', 'target',
+                  # 'prev_close', 'high52w', 'low52w', 'target_high', 'target_low', 'trading', 'target',
+                  'prev_close', 'high52w', 'low52w', 'target_high', 'target_low',
                   'notes', 'action', ]
 
         # Image fields are populated by the PIL "grabimage" functions
@@ -107,14 +108,14 @@ class StockForm(forms.ModelForm):
                 'step': '0.001',
                 'style': 'text-align: right',
             }),
-            'trading': forms.TextInput(attrs={
-                'step': '0.001',
-                'style': 'text-align: right',
-            }),
-            'target': forms.TextInput(attrs={
-                'step': '0.001',
-                'style': 'text-align: right',
-            }),
+            # 'trading': forms.TextInput(attrs={
+            #     'step': '0.001',
+            #     'style': 'text-align: right',
+            # }),
+            # 'target': forms.TextInput(attrs={
+            #     'step': '0.001',
+            #     'style': 'text-align: right',
+            # }),
 
             'ex_div_date': DateInput(),
             'last_baystreet_entry': DateInput(),
@@ -159,8 +160,8 @@ class StockForm(forms.ModelForm):
                 Column('low52w', css_class='form_group col-1'),
                 Column('target_high', css_class='form_group col-1'),
                 Column('target_low', css_class='form_group col-1'),
-                Column('trading', css_class="form_group col-1"),
-                Column('target', css_class="form_group col-1"),
+                # Column('trading', css_class="form_group col-1"),
+                # Column('target', css_class="form_group col-1"),
                 css_class='row g-2'
             ),
             Div(
